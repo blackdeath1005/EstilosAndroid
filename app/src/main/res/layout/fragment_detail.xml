@@ -1,6 +1,8 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content">
+
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
@@ -106,6 +108,6 @@
             android:layout_below="@id/textViewEstilista"
             android:paddingTop="40dp"/>
 
-
     </RelativeLayout>
+
 </ScrollView>

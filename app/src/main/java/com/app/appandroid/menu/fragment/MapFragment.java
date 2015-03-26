@@ -34,10 +34,8 @@ public class MapFragment extends Fragment implements LocationProvider.LocationCa
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.map_fragment, container,
-                false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        rootView = inflater.inflate(R.layout.map_fragment, container, false);
         loadMap(savedInstanceState);
         return rootView;
     }
@@ -128,6 +126,5 @@ public class MapFragment extends Fragment implements LocationProvider.LocationCa
     @Override
     public void onInfoWindowClick(Marker marker) {
         ((MainActivity)getActivity()).changeFragment(new DetailFragment());
-        //Toast.makeText(getActivity(), marker.getTitle(), Toast.LENGTH_SHORT).show();
     }
 }
