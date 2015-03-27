@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
+import android.widget.Toast;
 
 import com.app.appandroid.menu.fragment.FavoritesFragment;
 import com.app.appandroid.menu.fragment.HistoryFragment;
@@ -29,7 +30,6 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
         setContentView(R.layout.activity_main);
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)getFragmentManager().findFragmentById(R.id.navigation_drawer);
-        mTitle = getTitle();
 
         // Set up the drawer.
         mNavigationDrawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout));
@@ -43,12 +43,15 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
         switch (position) {
             case 0:
                 selectedFragment = new MapFragment();
+                mTitle = getString(R.string.title_section_search);
                 break;
             case 1:
                 selectedFragment = new HistoryFragment();
+                mTitle = getString(R.string.title_section_history);
                 break;
             case 2:
                 selectedFragment = new FavoritesFragment();
+                mTitle = getString(R.string.title_section_favorites);
                 break;
         }
 
@@ -61,25 +64,11 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
         fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
     }
 
-    public void onSectionAttached(int number) {
-        switch (number) {
-            case 1:
-                mTitle = getString(R.string.title_section_search);
-                break;
-            case 2:
-                mTitle = getString(R.string.title_section_history);
-                break;
-            case 3:
-                mTitle = getString(R.string.title_section_favorites);
-                break;
-        }
-    }
-
     public void restoreActionBar() {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setTitle(mTitle);
+        actionBar.setTitle(mTitle); //Titulo al cerrar el drawer y ver ventanas
     }
 
 

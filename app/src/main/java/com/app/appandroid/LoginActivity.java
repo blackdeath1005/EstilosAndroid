@@ -33,6 +33,9 @@ public class LoginActivity extends Activity {
         editTextMail = (EditText) findViewById(R.id.editTextMail);
         editTextPass = (EditText) findViewById(R.id.editTextPass);
 
+        editTextMail.setText("blackdeath1005@gmail.com");
+        editTextPass.setText("1234");
+
         buttonLogin = (Button) findViewById(R.id.buttonLogin);
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,7 +54,7 @@ public class LoginActivity extends Activity {
 
         mDialog = new ProgressDialog(this);
         mDialog.setMessage("Validando datos");
-        mDialog.setCancelable(false);
+        mDialog.setCancelable(true);
     }
 
     private void RegistrarUsuario() {
