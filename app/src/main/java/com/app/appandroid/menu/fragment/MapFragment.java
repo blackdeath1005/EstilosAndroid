@@ -3,6 +3,7 @@ package com.app.appandroid.menu.fragment;
 import android.app.Fragment;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,12 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.app.appandroid.MainActivity;
 import com.app.appandroid.R;
 import com.app.appandroid.map.LocationProvider;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.JsonHttpResponseHandler;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class MapFragment extends Fragment implements LocationProvider.LocationCallback, GoogleMap.OnInfoWindowClickListener {
 
@@ -27,6 +34,7 @@ public class MapFragment extends Fragment implements LocationProvider.LocationCa
     private GoogleMap googleMap;
     private LocationProvider mLocationProvider;
 
+    private static String URI_ESTABLECIMIENTOS = "http://estilosapp.apphb.com/Estilos.svc/ObtenerListaEstablecimiento/";
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,16 +98,30 @@ public class MapFragment extends Fragment implements LocationProvider.LocationCa
         googleMap.animateCamera(CameraUpdateFactory
                 .newCameraPosition(cameraPosition));*/
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 15));
-        Marker marker1 = googleMap.addMarker(new MarkerOptions()
-                .position(new LatLng(-11.949580, -77.060427))
-                .title("Soho Color")
-                .snippet("Salon & Spa"));
-        Marker marker2 = googleMap.addMarker(new MarkerOptions()
-                .position(new LatLng(-12.104526, -76.964083))
-                .title("Soho Color")
-                .snippet("Salon & Spa"));
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get(URI_ESTABLECIMIENTOS, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(JSONArray response){
+                try {    Log.d("MapFragment",response.toString());
+                    response.length();
+                    for (int i=0; i < response.length(); i++) {
+                        JSONObject jsonEstablecimiento = response.getJSONObject(i);
+                        double latitude = Double.parseDouble(jsonEstablecimiento.getString("latitud"));
+                        double longitude = Double.parseDouble(jsonEstablecimiento.getString("longitud"));
+                        MarkerOptions marker = new MarkerOptions().position(
+                                new LatLng(latitude, longitude)).title(jsonEstablecimiento.getString("noEstablecimiento"));
+                        googleMap.addMarker(marker);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
 
-
+            @Override
+            public void onFailure(int statusCode, Throwable throwable, JSONObject error) {
+                Log.d("MapFragment",error.toString());
+            }
+        });
     }
 
     @Override
