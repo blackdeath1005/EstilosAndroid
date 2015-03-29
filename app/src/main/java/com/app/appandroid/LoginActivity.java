@@ -63,7 +63,6 @@ public class LoginActivity extends Activity {
 
     private void AutenticarUsuario(String correo, String pass) {
 
-
         String urlString = "correo="+correo+"&pass="+pass;
 
         // Create a client to perform networking
@@ -92,8 +91,6 @@ public class LoginActivity extends Activity {
                 editTextMail.setText("");
                 editTextPass.setText("");
                 Toast.makeText(getApplicationContext(), error.optString("Mensaje").toString()+"!", Toast.LENGTH_LONG).show();
-
-
             }
         });
     }

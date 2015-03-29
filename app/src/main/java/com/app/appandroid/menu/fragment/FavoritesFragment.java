@@ -22,11 +22,12 @@ import org.json.JSONArray;
 
 public class FavoritesFragment extends Fragment {
 
-    private String QUERY_LIST_FAVORITES = "http://estilosapp.apphb.com/Estilos.svc/ObtenerListaFavoritoUsuario/?";
+    private String QUERY_LIST_FAVORITES = "http://estilosapp.apphb.com/Estilos.svc/ObtenerListaFavoritoUsuario/";
 
     View rootview;
     ListView favoritesListView;
     FavoritesAdapter favoritesAdapter;
+    String idUsuario;
 
     @Nullable
     @Override
@@ -34,20 +35,21 @@ public class FavoritesFragment extends Fragment {
 
         rootview = inflater.inflate(R.layout.fragment_favorites, container, false);
 
+        idUsuario = this.getArguments().getString("idUsuario");
+
         favoritesListView = (ListView) rootview.findViewById(R.id.listviewFavoritos);
-        favoritesAdapter = new FavoritesAdapter(rootview.getContext(),getActivity().getLayoutInflater());
+        favoritesAdapter = new FavoritesAdapter(rootview.getContext(),idUsuario);
         // Set the ListView to use the ArrayAdapter
         favoritesListView.setAdapter(favoritesAdapter);
 
-        //favoritesListView.setOnItemClickListener(this);
-        ListFavorites("1");
+        ListFavorites(idUsuario);
 
         return rootview;
     }
 
     private void ListFavorites(String id) {
 
-        String urlString = "codUsuario="+id;
+        String urlString = id;
 
         AsyncHttpClient client = new AsyncHttpClient();
 
@@ -57,7 +59,6 @@ public class FavoritesFragment extends Fragment {
 
             @Override
             public void onSuccess(JSONArray jsonArray) {
-                Toast.makeText(rootview.getContext().getApplicationContext(), "SUCCESS", Toast.LENGTH_LONG).show();
                 favoritesAdapter.updateData(jsonArray);
             }
 
@@ -68,5 +69,6 @@ public class FavoritesFragment extends Fragment {
         });
 
     }
+
 }
 

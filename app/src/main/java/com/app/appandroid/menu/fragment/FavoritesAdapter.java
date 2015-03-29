@@ -13,29 +13,33 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.app.appandroid.R;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.JsonHttpResponseHandler;
 
 public class FavoritesAdapter extends BaseAdapter {
+
+    private String QUERY_DELETE_FAVORITES = "http://estilosapp.apphb.com/Estilos.svc/EliminarFavorito/";
+    private String QUERY_LIST_FAVORITES = "http://estilosapp.apphb.com/Estilos.svc/ObtenerListaFavoritoUsuario/";
 
     Context mContext;
     LayoutInflater mInflater;
     JSONArray mFavoritesArray;
+    String mIdUsuario;
 
-    public FavoritesAdapter(Context context, LayoutInflater inflater) {
+    public FavoritesAdapter(Context context, String idUsuario) {
         mContext = context;
-        mInflater = inflater;
+        mInflater = LayoutInflater.from(context);
         mFavoritesArray = new JSONArray();
-        Toast.makeText(mContext.getApplicationContext(), "Favorites adapter", Toast.LENGTH_LONG).show();
+        mIdUsuario = idUsuario;
     }
 
     @Override
     public int getCount() {
-        Toast.makeText(mContext.getApplicationContext(),"getCount "+ mFavoritesArray.length()+"", Toast.LENGTH_LONG).show();
         return mFavoritesArray.length();
     }
 
     @Override
     public JSONObject getItem(int position) {
-        Toast.makeText(mContext.getApplicationContext(), "getItem "+mFavoritesArray.optJSONObject(position).toString(), Toast.LENGTH_LONG).show();
         return mFavoritesArray.optJSONObject(position);
     }
 
@@ -78,14 +82,16 @@ public class FavoritesAdapter extends BaseAdapter {
 
         // Get the current book's data in JSON form
         JSONObject jsonObject = (JSONObject) getItem(position);
-        Toast.makeText(mContext.getApplicationContext(), "getView "+position, Toast.LENGTH_LONG).show();
-        Toast.makeText(mContext.getApplicationContext(), jsonObject.optString("noEstablecimiento").toString(), Toast.LENGTH_LONG).show();
         // Grab the title and author from the JSON
+        String idFavorito = "";
         String noEstablecimiento = "";
         String direccion = "";
         String telefono = "";
         String horario = "";
 
+        if (jsonObject.has("idFavorito")) {
+            idFavorito = jsonObject.optString("idFavorito","");
+        }
         if (jsonObject.has("noEstablecimiento")) {
             noEstablecimiento = jsonObject.optString("noEstablecimiento");
         }
@@ -105,6 +111,14 @@ public class FavoritesAdapter extends BaseAdapter {
         holder.textHorarioTitulo.setText("Horario de Atencion:");
         holder.textHorario.setText("L-V "+horario);
 
+        holder.imageButton.setTag(idFavorito);
+        holder.imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EliminarFavorito(v.getTag().toString());
+            }
+        });
+
         return convertView;
     }
 
@@ -122,8 +136,54 @@ public class FavoritesAdapter extends BaseAdapter {
     public void updateData(JSONArray jsonArray) {
         // update the adapter's dataset
         mFavoritesArray = jsonArray;
-        Toast.makeText(mContext.getApplicationContext(), "ADAPTER", Toast.LENGTH_LONG).show();
         notifyDataSetChanged();
+    }
+
+    private void EliminarFavorito(String id) {
+
+        String urlString = id;
+
+        AsyncHttpClient client = new AsyncHttpClient();
+
+        Toast.makeText(mContext, QUERY_DELETE_FAVORITES+urlString, Toast.LENGTH_LONG).show();
+
+        client.get(QUERY_DELETE_FAVORITES+urlString, new JsonHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(JSONObject error) {
+                Toast.makeText(mContext.getApplicationContext(), "Error en la eliminacion!", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Throwable throwable, JSONObject jsonObject) {
+                Toast.makeText(mContext.getApplicationContext(), jsonObject.optString("Mensaje").toString()+"!", Toast.LENGTH_LONG).show();
+                ListFavorites(mIdUsuario);
+            }
+        });
+
+    }
+
+    private void ListFavorites(String id) {
+
+        String urlString = id;
+
+        AsyncHttpClient client = new AsyncHttpClient();
+
+        Toast.makeText(mContext, QUERY_LIST_FAVORITES+urlString, Toast.LENGTH_LONG).show();
+
+        client.get(QUERY_LIST_FAVORITES+urlString, new JsonHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(JSONArray jsonArray) {
+                updateData(jsonArray);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Throwable throwable, JSONObject error) {
+                Toast.makeText(mContext.getApplicationContext(), error.optString("Mensaje").toString()+"!", Toast.LENGTH_LONG).show();
+            }
+        });
+
     }
 
 }

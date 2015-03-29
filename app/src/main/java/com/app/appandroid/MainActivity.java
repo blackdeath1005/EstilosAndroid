@@ -23,11 +23,18 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
 
     private  NavigationDrawerFragment mNavigationDrawerFragment;
     private CharSequence mTitle;
+    String idUsuario;
+    String noUsuario;
+    String correoUsuario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        idUsuario = this.getIntent().getExtras().getString("idUsuario");
+        noUsuario = this.getIntent().getExtras().getString("noUsuario");
+        correoUsuario = this.getIntent().getExtras().getString("correoUsuario");
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)getFragmentManager().findFragmentById(R.id.navigation_drawer);
 
@@ -51,6 +58,9 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
                 break;
             case 2:
                 selectedFragment = new FavoritesFragment();
+                Bundle args = new Bundle();
+                args.putString("idUsuario", idUsuario);
+                selectedFragment.setArguments(args);
                 mTitle = getString(R.string.title_section_favorites);
                 break;
         }
