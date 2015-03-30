@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -64,7 +65,7 @@ public class FavoritesAdapter extends BaseAdapter {
             // create a new "Holder" with subviews
             holder = new ViewHolder();
             holder.textNombre = (TextView) convertView.findViewById(R.id.textNombre);
-            holder.imageButton = (ImageButton) convertView.findViewById(R.id.imageButton);
+            holder.imageDelete = (ImageView) convertView.findViewById(R.id.imageDelete);
             holder.textDireccion = (TextView) convertView.findViewById(R.id.textDireccion);
             holder.textTelefono = (TextView) convertView.findViewById(R.id.textTelefono);
             holder.textHorarioTitulo = (TextView) convertView.findViewById(R.id.textHorarioTitulo);
@@ -111,8 +112,8 @@ public class FavoritesAdapter extends BaseAdapter {
         holder.textHorarioTitulo.setText("Horario de Atencion:");
         holder.textHorario.setText("L-V "+horario);
 
-        holder.imageButton.setTag(idFavorito);
-        holder.imageButton.setOnClickListener(new View.OnClickListener() {
+        holder.imageDelete.setTag(idFavorito);
+        holder.imageDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 EliminarFavorito(v.getTag().toString());
@@ -126,7 +127,7 @@ public class FavoritesAdapter extends BaseAdapter {
     // inflation and finding by ID once ever per View
     private static class ViewHolder {
         public TextView textNombre;
-        public ImageButton imageButton;
+        public ImageView imageDelete;
         public TextView textDireccion;
         public TextView textTelefono;
         public TextView textHorarioTitulo;
