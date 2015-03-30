@@ -93,15 +93,15 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Estilista"
-            android:id="@+id/textViewEstilista"
+            android:id="@+id/textViewStylist"
             android:layout_alignLeft="@id/textViewOperationH"
             android:layout_below="@id/textViewService"
             android:paddingTop="40dp"/>
         <Spinner
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:id="@+id/spinnerEstilista"
-            android:layout_toRightOf="@id/textViewEstilista"
+            android:id="@+id/spinnerStylist"
+            android:layout_toRightOf="@id/textViewStylist"
             android:layout_marginLeft="30dp"
             android:layout_marginTop="10dp"
             android:layout_below="@id/spinnerService"
@@ -115,7 +115,7 @@
             android:text="Fecha"
             android:id="@+id/textViewDate"
             android:layout_alignLeft="@id/textViewOperationH"
-            android:layout_below="@id/textViewEstilista"
+            android:layout_below="@id/textViewStylist"
             android:paddingTop="40dp"/>
 
     </RelativeLayout>

@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.app.appandroid.R;
 import com.app.appandroid.model.Service;
+import com.app.appandroid.model.Stylist;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.loopj.android.http.AsyncHttpClient;
@@ -25,7 +26,6 @@ import org.json.JSONObject;
 public class DetailFragment extends Fragment {
 
     View rootview;
-    ArrayAdapter sevicesAdapter;
     private JSONObject establecimiento;
 
     private TextView textViewName;
@@ -35,8 +35,12 @@ public class DetailFragment extends Fragment {
     private TextView textViewPhone;
 
     private Spinner spinnerServices;
+    private ArrayAdapter sevicesAdapter;
+    private Spinner spinnerStylists;
+    private ArrayAdapter stylistsAdapter;
 
     private static String URI_SERVICES = "http://estilosapp.apphb.com/Estilos.svc/ObtenerListaServicioEstablecimiento/";
+    private static String URI_STYLISTS = "http://estilosapp.apphb.com/Estilos.svc/ObtenerListaEstilistaEstablecimiento/";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -58,6 +62,7 @@ public class DetailFragment extends Fragment {
             textViewOperationH.setText(establecimiento.getString("horario"));
             textViewPhone.setText("Teléfono:  "+establecimiento.getString("telefono"));
             initializeSpinnerService(establecimiento.getInt("idEstablecimiento"));
+            initializeSpinnerStylists(establecimiento.getInt("idEstablecimiento"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -87,7 +92,36 @@ public class DetailFragment extends Fragment {
 
             @Override
             public void onFailure(int statusCode, Throwable throwable, JSONObject error) {
-                Log.d("MapFragment",error.toString());
+                Log.d("DetailFragment",error.toString());
+            }
+        });
+    }
+
+    private  void initializeSpinnerStylists(int idEstablecimiento){
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get(URI_STYLISTS+idEstablecimiento, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(JSONArray response){
+                try {
+                    Stylist[] stylistArray= new Stylist[response.length()];
+                    for (int i=0; i < response.length(); i++) {
+                        Stylist stylist = new Stylist();
+                        JSONObject jsonService= response.getJSONObject(i);
+                        stylist.setId(jsonService.getInt("idEstilista"));
+                        stylist.setName(jsonService.getString("noEstilista"));
+                        stylistArray[i]= stylist;
+                    }
+                    spinnerStylists =(Spinner) rootview.findViewById(R.id.spinnerStylist);
+                    stylistsAdapter = new ArrayAdapter(getActivity(),R.layout.support_simple_spinner_dropdown_item,stylistArray);
+                    spinnerStylists.setAdapter(stylistsAdapter);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Throwable throwable, JSONObject error) {
+                Log.d("DetailFragment",error.toString());
             }
         });
     }
