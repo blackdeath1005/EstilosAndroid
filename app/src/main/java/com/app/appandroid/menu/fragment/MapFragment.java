@@ -35,6 +35,8 @@ public class MapFragment extends Fragment implements LocationProvider.LocationCa
     private LocationProvider mLocationProvider;
 
     private static String URI_ESTABLECIMIENTOS = "http://estilosapp.apphb.com/Estilos.svc/ObtenerListaEstablecimiento/";
+    private static String URI_ESTABLECIMIENTO = "http://estilosapp.apphb.com/Estilos.svc/BuscarEstablecimiento?";
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,10 +95,6 @@ public class MapFragment extends Fragment implements LocationProvider.LocationCa
 
     @Override
     public void handleFirstLocation(Location location) {
-        /*CameraPosition cameraPosition = new CameraPosition.Builder()
-                .target(new LatLng(location.getLatitude(), location.getLongitude())).zoom(15).build();
-        googleMap.animateCamera(CameraUpdateFactory
-                .newCameraPosition(cameraPosition));*/
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 15));
         AsyncHttpClient client = new AsyncHttpClient();
         client.get(URI_ESTABLECIMIENTOS, new JsonHttpResponseHandler() {
@@ -147,6 +145,25 @@ public class MapFragment extends Fragment implements LocationProvider.LocationCa
 
     @Override
     public void onInfoWindowClick(Marker marker) {
-        ((MainActivity)getActivity()).changeFragment(new DetailFragment());
+        LatLng position = marker.getPosition();
+        double latitude = position.latitude;
+        double longitude = position.longitude;
+        String latitudParam = "latitud="+latitude;
+        String longitudeParam = "longitud="+longitude;
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get(URI_ESTABLECIMIENTO+latitudParam+"&"+longitudeParam, new JsonHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(JSONObject response) {
+                DetailFragment detailFragment = new DetailFragment();
+                detailFragment.setEstablecimiento(response);
+                ((MainActivity)getActivity()).changeFragment(detailFragment);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Throwable throwable, JSONObject error) {
+                Log.d("MapFragment",error.toString());
+            }
+        });
     }
 }

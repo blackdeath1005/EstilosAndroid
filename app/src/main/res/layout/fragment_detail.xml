@@ -60,13 +60,23 @@
             android:layout_marginTop="10dp"/>
 
         <TextView
+            android:layout_width="333dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Teléfono : 99999999"
+            android:id="@+id/textViewPhone"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/textViewOperationH"
+            android:layout_marginTop="10dp"/>
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Servicio"
             android:id="@+id/textViewService"
-            android:layout_alignLeft="@id/textViewOperationH"
-            android:layout_below="@id/textViewOperationH"
+            android:layout_alignLeft="@id/textViewPhone"
+            android:layout_below="@id/textViewPhone"
             android:layout_marginTop="20dp"/>
         <Spinner
             android:layout_width="200dp"
@@ -75,7 +85,7 @@
             android:layout_toRightOf="@id/textViewService"
             android:layout_marginLeft="30dp"
             android:layout_marginTop="10dp"
-            android:layout_below="@id/textViewOperationH"
+            android:layout_below="@id/textViewPhone"
             android:layout_centerHorizontal="true" />
 
         <TextView
