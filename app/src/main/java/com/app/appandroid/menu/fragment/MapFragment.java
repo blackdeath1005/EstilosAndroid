@@ -27,6 +27,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
+
 public class MapFragment extends Fragment implements LocationProvider.LocationCallback, GoogleMap.OnInfoWindowClickListener {
 
     View rootView;
@@ -35,7 +37,7 @@ public class MapFragment extends Fragment implements LocationProvider.LocationCa
     private LocationProvider mLocationProvider;
 
     private static String URI_ESTABLECIMIENTOS = "http://estilosapp.apphb.com/Estilos.svc/ObtenerListaEstablecimiento/";
-    private static String URI_ESTABLECIMIENTO = "http://estilosapp.apphb.com/Estilos.svc/BuscarEstablecimiento?";
+    private static String URI_ESTABLECIMIENTO = "http://estilosapp.apphb.com/Estilos.svc/BuscarEstablecimiento/?";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -97,9 +99,11 @@ public class MapFragment extends Fragment implements LocationProvider.LocationCa
     public void handleFirstLocation(Location location) {
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 15));
         AsyncHttpClient client = new AsyncHttpClient();
+        Toast.makeText(rootView.getContext(), URI_ESTABLECIMIENTOS, Toast.LENGTH_LONG).show();
         client.get(URI_ESTABLECIMIENTOS, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(JSONArray response){
+                Toast.makeText(rootView.getContext().getApplicationContext(), "Success!", Toast.LENGTH_LONG).show();
                 try {    Log.d("MapFragment",response.toString());
                     response.length();
                     for (int i=0; i < response.length(); i++) {
@@ -148,13 +152,17 @@ public class MapFragment extends Fragment implements LocationProvider.LocationCa
         LatLng position = marker.getPosition();
         double latitude = position.latitude;
         double longitude = position.longitude;
-        String latitudParam = "latitud="+latitude;
-        String longitudeParam = "longitud="+longitude;
+        String latitudParam = "latitud="+String.format("%.7f", latitude);
+        String longitudeParam = "longitud="+String.format("%.7f", longitude);
+        latitudParam = latitudParam.replace(",",".");
+        longitudeParam = longitudeParam.replace(",",".");
         AsyncHttpClient client = new AsyncHttpClient();
+        Toast.makeText(rootView.getContext(), URI_ESTABLECIMIENTO+latitudParam+"&"+longitudeParam, Toast.LENGTH_LONG).show();
         client.get(URI_ESTABLECIMIENTO+latitudParam+"&"+longitudeParam, new JsonHttpResponseHandler() {
 
             @Override
             public void onSuccess(JSONObject response) {
+                Toast.makeText(rootView.getContext().getApplicationContext(), "Success!", Toast.LENGTH_LONG).show();
                 DetailFragment detailFragment = new DetailFragment();
                 detailFragment.setEstablecimiento(response);
                 ((MainActivity)getActivity()).changeFragment(detailFragment);

@@ -116,7 +116,7 @@
             android:id="@+id/textViewDate"
             android:layout_alignLeft="@id/textViewOperationH"
             android:layout_below="@id/textViewStylist"
-            android:paddingTop="40dp"/>
+            android:paddingTop="40dp" />
 
     </RelativeLayout>
 
