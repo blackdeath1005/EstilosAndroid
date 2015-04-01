@@ -4,8 +4,8 @@
     android:layout_height="wrap_content">
 
     <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <TextView
             android:layout_width="wrap_content"
@@ -113,10 +113,54 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Fecha"
-            android:id="@+id/textViewDate"
+            android:id="@+id/textViewDateInfo"
             android:layout_alignLeft="@id/textViewOperationH"
             android:layout_below="@id/textViewStylist"
             android:paddingTop="40dp" />
+
+        <TextView
+            android:layout_width="190dp"
+            android:layout_height="wrap_content"
+            android:text="New Text"
+            android:id="@+id/textViewDate"
+            style="@android:style/Widget.DeviceDefault.Light.Spinner"
+            android:layout_alignBottom="@+id/textViewDateInfo"
+            android:layout_toRightOf="@id/textViewDateInfo"
+            android:layout_marginLeft="58dp"
+            android:layout_marginTop="25dp"
+            android:layout_below="@+id/spinnerStylist" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Hora"
+            android:id="@+id/textViewTimeInfo"
+            android:layout_alignLeft="@id/textViewOperationH"
+            android:layout_below="@id/textViewDateInfo"
+            android:paddingTop="40dp" />
+
+        <TextView
+            android:layout_width="190dp"
+            android:layout_height="wrap_content"
+            android:text="New Text"
+            android:id="@+id/textViewTime"
+            style="@android:style/Widget.DeviceDefault.Light.Spinner"
+            android:layout_alignBottom="@+id/textViewTimeInfo"
+            android:layout_alignLeft="@+id/textViewDate"
+            android:layout_alignStart="@+id/textViewDate" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Reservar"
+            android:id="@+id/button"
+            android:layout_below="@+id/textViewTime"
+            android:layout_alignLeft="@+id/textViewTimeInfo"
+            android:layout_alignStart="@+id/textViewTimeInfo"
+            android:layout_marginTop="15dp"
+            android:layout_alignRight="@+id/textViewTime"
+            android:layout_alignEnd="@+id/textViewTime" />
 
     </RelativeLayout>
 
