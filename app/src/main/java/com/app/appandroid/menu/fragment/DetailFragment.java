@@ -1,11 +1,10 @@
 package com.app.appandroid.menu.fragment;
 
 import android.app.DatePickerDialog;
-import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.app.TimePickerDialog;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,13 +13,13 @@ import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.app.appandroid.R;
 import com.app.appandroid.model.Service;
 import com.app.appandroid.model.Stylist;
 import com.app.appandroid.widgets.DatePickerDialogFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
+import com.app.appandroid.widgets.TimePickerDialogFragment;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -33,7 +32,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-public class DetailFragment extends Fragment implements DatePickerDialog.OnDateSetListener {
+public class DetailFragment extends Fragment implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
     private static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("dd/MM/yyyy");
     View rootview;
@@ -45,6 +44,7 @@ public class DetailFragment extends Fragment implements DatePickerDialog.OnDateS
     private TextView textViewOperationH;
     private TextView textViewPhone;
     private TextView textViewDate;
+    private TextView textViewTime;
 
     private Spinner spinnerServices;
     private ArrayAdapter sevicesAdapter;
@@ -78,6 +78,16 @@ public class DetailFragment extends Fragment implements DatePickerDialog.OnDateS
                 newFragment.show(ft, "date_dialog");
             }
         });
+        textViewTime = (TextView)rootview.findViewById(R.id.textViewTime);
+        textViewTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                TimePickerDialogFragment newFragment = new TimePickerDialogFragment();
+                newFragment.setOnTimeSetListener(DetailFragment.this);
+                newFragment.show(ft,"time_dialog");
+            }
+        });
         try {
             textViewName.setText(establecimiento.getString("noEstablecimiento"));
             textViewDesc.setText(establecimiento.getString("desEstablecimiento"));
@@ -89,12 +99,6 @@ public class DetailFragment extends Fragment implements DatePickerDialog.OnDateS
         } catch (JSONException e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-        Calendar calendar = new GregorianCalendar(year, monthOfYear, dayOfMonth);
-        textViewDate.setText(DATE_FORMATTER.format(calendar.getTime()));
     }
 
     private  void initializeSpinnerService(int idEstablecimiento){
@@ -157,5 +161,19 @@ public class DetailFragment extends Fragment implements DatePickerDialog.OnDateS
 
     public void setEstablecimiento(JSONObject establecimiento) {
         this.establecimiento = establecimiento;
+    }
+
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+        Calendar calendar = new GregorianCalendar(year, monthOfYear, dayOfMonth);
+        textViewDate.setText(DATE_FORMATTER.format(calendar.getTime()));
+    }
+
+    @Override
+    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+        String hourToShow = hourOfDay<10 ? "0"+hourOfDay : hourOfDay+"";
+        String minuteToShow = minute <10 ? "0"+minute : minute+"";
+        textViewTime.setText(hourToShow+":"+minuteToShow);
     }
 }
