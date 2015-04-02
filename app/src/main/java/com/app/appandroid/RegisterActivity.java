@@ -65,43 +65,43 @@ public class RegisterActivity extends Activity {
             Toast.makeText(this, "Debe llenar todos los campos!", Toast.LENGTH_LONG).show();
         }
         else
-            if (!pass1.equals(pass2)) {
-                Toast.makeText(this, "Password no coinciden!", Toast.LENGTH_LONG).show();
-            }
-            else {
-                String urlString = "nombre="+nombre+"&correo="+correo+"&pass="+pass1;
+        if (!pass1.equals(pass2)) {
+            Toast.makeText(this, "Password no coinciden!", Toast.LENGTH_LONG).show();
+        }
+        else {
+            String urlString = "nombre="+nombre+"&correo="+correo+"&pass="+pass1;
 
-                // Create a client to perform networking
-                AsyncHttpClient client = new AsyncHttpClient();
+            // Create a client to perform networking
+            AsyncHttpClient client = new AsyncHttpClient();
 
-                Toast.makeText(this, QUERY_REGISTRATION + urlString, Toast.LENGTH_LONG).show();
+            Toast.makeText(this, QUERY_REGISTRATION + urlString, Toast.LENGTH_LONG).show();
 
-                // Show ProgressDialog to inform user that a task in the background is occurring
-                mDialog.show();
-                // Have the client get a JSONArray of data nd define how to respond
-                client.get(QUERY_REGISTRATION + urlString, new JsonHttpResponseHandler() {
+            // Show ProgressDialog to inform user that a task in the background is occurring
+            mDialog.show();
+            // Have the client get a JSONArray of data nd define how to respond
+            client.get(QUERY_REGISTRATION + urlString, new JsonHttpResponseHandler() {
 
-                    @Override
-                    public void onSuccess(JSONObject jsonObject) {
-                        mDialog.dismiss();
+                @Override
+                public void onSuccess(JSONObject jsonObject) {
+                    mDialog.dismiss();
 
-                        Toast.makeText(getApplicationContext(), "Success!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Success!", Toast.LENGTH_LONG).show();
 
-                        NavUtils.navigateUpFromSameTask(RegisterActivity.this);
-                    }
+                    NavUtils.navigateUpFromSameTask(RegisterActivity.this);
+                }
 
-                    @Override
-                    public void onFailure(int statusCode, Throwable throwable, JSONObject error) {
-                        mDialog.dismiss();
+                @Override
+                public void onFailure(int statusCode, Throwable throwable, JSONObject error) {
+                    mDialog.dismiss();
 
-                        editTextName.setText("");
-                        editTextMail.setText("");
-                        editTextPass1.setText("");
-                        editTextPass2.setText("");
-                        Toast.makeText(getApplicationContext(), error.optString("Mensaje").toString()+"!", Toast.LENGTH_LONG).show();
-                    }
-                });
-            }
+                    editTextName.setText("");
+                    editTextMail.setText("");
+                    editTextPass1.setText("");
+                    editTextPass2.setText("");
+                    Toast.makeText(getApplicationContext(), error.optString("Mensaje").toString()+"!", Toast.LENGTH_LONG).show();
+                }
+            });
+        }
     }
 
 }
