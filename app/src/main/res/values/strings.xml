@@ -4,6 +4,7 @@
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_login">EstilosApp</string>
     <string name="title_activity_main">Principal</string>
+    <string name="title_activity_register">Registrarse</string>
 
     <string name="title_section_search">Buscar</string>
     <string name="title_section_history">Historial</string>

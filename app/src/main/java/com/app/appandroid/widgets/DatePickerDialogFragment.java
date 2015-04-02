@@ -8,9 +8,6 @@ import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.Dialog;
 import android.os.Bundle;
 
-/**
- * Created by Try on 31/03/2015.
- */
 public class DatePickerDialogFragment extends DialogFragment{
     private OnDateSetListener mDateSetListener;
 

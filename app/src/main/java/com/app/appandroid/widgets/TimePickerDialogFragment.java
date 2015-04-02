@@ -9,9 +9,6 @@ import android.os.Bundle;
 
 import java.util.Calendar;
 
-/**
- * Created by Try on 31/03/2015.
- */
 public class TimePickerDialogFragment extends DialogFragment {
     private OnTimeSetListener onTimeSetListener;
 

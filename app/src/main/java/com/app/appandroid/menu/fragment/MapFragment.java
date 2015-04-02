@@ -49,6 +49,7 @@ public class MapFragment extends Fragment implements LocationProvider.LocationCa
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.map_fragment, container, false);
         loadMap(savedInstanceState);
+
         return rootView;
     }
 

@@ -54,13 +54,16 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
                 break;
             case 1:
                 selectedFragment = new HistoryFragment();
+                Bundle argsHistory = new Bundle();
+                argsHistory.putString("idUsuario", idUsuario);
+                selectedFragment.setArguments(argsHistory);
                 mTitle = getString(R.string.title_section_history);
                 break;
             case 2:
                 selectedFragment = new FavoritesFragment();
-                Bundle args = new Bundle();
-                args.putString("idUsuario", idUsuario);
-                selectedFragment.setArguments(args);
+                Bundle argsFavorite = new Bundle();
+                argsFavorite.putString("idUsuario", idUsuario);
+                selectedFragment.setArguments(argsFavorite);
                 mTitle = getString(R.string.title_section_favorites);
                 break;
         }

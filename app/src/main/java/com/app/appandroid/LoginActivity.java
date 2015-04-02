@@ -58,7 +58,11 @@ public class LoginActivity extends Activity {
     }
 
     private void RegistrarUsuario() {
+        // create an Intent to take you over to a new DetailActivity
+        Intent intentMap = new Intent(LoginActivity.this,RegisterActivity.class);
 
+        // start the next Activity using your prepared Intent
+        startActivity(intentMap);
     }
 
     private void AutenticarUsuario(String correo, String pass) {

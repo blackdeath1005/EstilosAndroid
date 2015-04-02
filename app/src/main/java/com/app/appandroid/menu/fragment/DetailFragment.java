@@ -10,10 +10,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.app.appandroid.R;
 import com.app.appandroid.model.Service;
@@ -45,6 +47,7 @@ public class DetailFragment extends Fragment implements DatePickerDialog.OnDateS
     private TextView textViewPhone;
     private TextView textViewDate;
     private TextView textViewTime;
+    private Button buttonReservar;
 
     private Spinner spinnerServices;
     private ArrayAdapter sevicesAdapter;
@@ -99,6 +102,14 @@ public class DetailFragment extends Fragment implements DatePickerDialog.OnDateS
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        buttonReservar = (Button)rootview.findViewById(R.id.buttonReservar);
+        buttonReservar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ReservarEstablecimiento();
+            }
+        });
     }
 
     private  void initializeSpinnerService(int idEstablecimiento){
@@ -163,6 +174,25 @@ public class DetailFragment extends Fragment implements DatePickerDialog.OnDateS
         this.establecimiento = establecimiento;
     }
 
+    private void ReservarEstablecimiento() {
+
+        Service servicio = (Service)spinnerServices.getSelectedItem();
+        int servicioId = servicio.getId();
+        String servicioName = servicio.getName();
+
+        Stylist estilista = (Stylist)spinnerStylists.getSelectedItem();
+        int estilistaId = estilista.getId();
+        String estilistaName = estilista.getName();
+
+        String fecha = textViewDate.getText().toString();
+        String dia = fecha.substring(0,2);
+        String mes = fecha.substring(3,5);
+        String anno = fecha.substring(6,10);
+        String fechaSQL = anno+"-"+mes+"-"+dia;
+        String hora = textViewTime.getText().toString()+":00";
+
+        Toast.makeText(rootview.getContext(), estilistaId+":"+estilistaName+"-"+servicioId+":"+servicioName+"-"+fechaSQL+" "+hora, Toast.LENGTH_LONG).show();
+    }
 
     @Override
     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -173,7 +203,6 @@ public class DetailFragment extends Fragment implements DatePickerDialog.OnDateS
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         String hourToShow = hourOfDay<10 ? "0"+hourOfDay : hourOfDay+"";
-        String minuteToShow = minute <10 ? "0"+minute : minute+"";
-        textViewTime.setText(hourToShow+":"+minuteToShow);
+        textViewTime.setText(hourToShow+":00");
     }
 }
