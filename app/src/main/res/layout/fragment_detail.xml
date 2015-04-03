@@ -20,14 +20,25 @@
             android:textSize="35sp"/>
 
         <ImageView
-            android:layout_width="190dp"
-            android:layout_height="190dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:id="@+id/imageViewPortrait"
             android:layout_gravity="center_horizontal|top"
             android:src="@android:mipmap/sym_def_app_icon"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
             android:layout_below="@id/textViewName"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_action_not_important"
+            android:id="@+id/imageFavorite"
+            android:clickable="true"
+            android:layout_below="@id/imageViewPortrait"
+            android:layout_alignRight="@+id/textViewDesc"
+            android:layout_alignEnd="@+id/textViewDesc"
+            android:layout_marginTop="10dp" />
 
         <TextView
             android:layout_width="333dp"
@@ -36,7 +47,7 @@
             android:text="Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem IpsumLorem Ipsum    Lorem Ipsum"
             android:id="@+id/textViewDesc"
             android:layout_centerHorizontal="true"
-            android:layout_below="@id/imageViewPortrait"
+            android:layout_below="@id/imageFavorite"
             android:layout_marginTop="10dp"/>
 
         <TextView

@@ -36,6 +36,14 @@ public class MapFragment extends Fragment implements LocationProvider.LocationCa
     private GoogleMap googleMap;
     private LocationProvider mLocationProvider;
 
+    String idUsuario;
+    String idEstablecimiento = "";
+    String noEstablecimiento = "";
+    String desEstablecimiento = "";
+    String direccion = "";
+    String telefono = "";
+    String horario = "";
+
     private static String URI_ESTABLECIMIENTOS = "http://estilosapp.apphb.com/Estilos.svc/ObtenerListaEstablecimiento/";
     private static String URI_ESTABLECIMIENTO = "http://estilosapp.apphb.com/Estilos.svc/BuscarEstablecimiento/?";
 
@@ -48,8 +56,10 @@ public class MapFragment extends Fragment implements LocationProvider.LocationCa
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.map_fragment, container, false);
-        loadMap(savedInstanceState);
 
+        idUsuario = this.getArguments().getString("idUsuario");
+
+        loadMap(savedInstanceState);
         return rootView;
     }
 
@@ -157,15 +167,43 @@ public class MapFragment extends Fragment implements LocationProvider.LocationCa
         String longitudeParam = "longitud="+String.format("%.7f", longitude);
         latitudParam = latitudParam.replace(",",".");
         longitudeParam = longitudeParam.replace(",",".");
+
         AsyncHttpClient client = new AsyncHttpClient();
+
         Toast.makeText(rootView.getContext(), URI_ESTABLECIMIENTO+latitudParam+"&"+longitudeParam, Toast.LENGTH_LONG).show();
         client.get(URI_ESTABLECIMIENTO+latitudParam+"&"+longitudeParam, new JsonHttpResponseHandler() {
 
             @Override
-            public void onSuccess(JSONObject response) {
+            public void onSuccess(JSONObject jsonObject) {
                 Toast.makeText(rootView.getContext().getApplicationContext(), "Success!", Toast.LENGTH_LONG).show();
                 DetailFragment detailFragment = new DetailFragment();
-                detailFragment.setEstablecimiento(response);
+                if (jsonObject.has("idEstablecimiento")) {
+                    idEstablecimiento = jsonObject.optString("idEstablecimiento","");
+                }
+                if (jsonObject.has("noEstablecimiento")) {
+                    noEstablecimiento = jsonObject.optString("noEstablecimiento");
+                }
+                if (jsonObject.has("desEstablecimiento")) {
+                    desEstablecimiento = jsonObject.optString("desEstablecimiento");
+                }
+                if (jsonObject.has("direccion")) {
+                    direccion = jsonObject.optString("direccion");
+                }
+                if (jsonObject.has("telefono")) {
+                    telefono = jsonObject.optString("telefono");
+                }
+                if (jsonObject.has("horario")) {
+                    horario = jsonObject.optString("horario");
+                }
+                Bundle argsUsuario = new Bundle();
+                argsUsuario.putString("idUsuario", idUsuario);
+                argsUsuario.putString("idEstablecimiento", idEstablecimiento);
+                argsUsuario.putString("noEstablecimiento", noEstablecimiento);
+                argsUsuario.putString("desEstablecimiento", desEstablecimiento);
+                argsUsuario.putString("direccion", direccion);
+                argsUsuario.putString("telefono", telefono);
+                argsUsuario.putString("horario", horario);
+                detailFragment.setArguments(argsUsuario);
                 ((MainActivity)getActivity()).changeFragment(detailFragment);
             }
 

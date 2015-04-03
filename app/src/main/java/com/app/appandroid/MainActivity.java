@@ -50,6 +50,9 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
         switch (position) {
             case 0:
                 selectedFragment = new MapFragment();
+                Bundle argsMap = new Bundle();
+                argsMap.putString("idUsuario", idUsuario);
+                selectedFragment.setArguments(argsMap);
                 mTitle = getString(R.string.title_section_search);
                 break;
             case 1:
