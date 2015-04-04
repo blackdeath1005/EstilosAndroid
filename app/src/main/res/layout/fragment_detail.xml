@@ -26,19 +26,31 @@
             android:layout_gravity="center_horizontal|top"
             android:src="@android:mipmap/sym_def_app_icon"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
+            android:layout_margin="10dp"
             android:layout_below="@id/textViewName"/>
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_action_not_important"
-            android:id="@+id/imageFavorite"
+            android:id="@+id/imageNoFavorite"
             android:clickable="true"
             android:layout_below="@id/imageViewPortrait"
             android:layout_alignRight="@+id/textViewDesc"
             android:layout_alignEnd="@+id/textViewDesc"
             android:layout_marginTop="10dp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_action_important"
+            android:id="@+id/imageFavorite"
+            android:clickable="true"
+            android:layout_below="@id/imageViewPortrait"
+            android:layout_alignRight="@+id/textViewDesc"
+            android:layout_alignEnd="@+id/textViewDesc"
+            android:layout_marginTop="10dp"
+            android:visibility="invisible" />
 
         <TextView
             android:layout_width="333dp"
@@ -134,7 +146,7 @@
         <TextView
             android:layout_width="190dp"
             android:layout_height="wrap_content"
-            android:text="New Text"
+            android:text=""
             android:id="@+id/textViewDate"
             style="@android:style/Widget.DeviceDefault.Light.Spinner"
             android:layout_alignBottom="@+id/textViewDateInfo"
@@ -154,7 +166,7 @@
         <TextView
             android:layout_width="190dp"
             android:layout_height="wrap_content"
-            android:text="New Text"
+            android:text=""
             android:id="@+id/textViewTime"
             style="@android:style/Widget.DeviceDefault.Light.Spinner"
             android:layout_alignBottom="@+id/textViewTimeInfo"

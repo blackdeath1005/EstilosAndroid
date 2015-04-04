@@ -25,6 +25,7 @@ import com.app.appandroid.widgets.DatePickerDialogFragment;
 import com.app.appandroid.widgets.TimePickerDialogFragment;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,8 +40,8 @@ public class DetailFragment extends Fragment implements DatePickerDialog.OnDateS
 
     private static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("dd/MM/yyyy");
     View rootview;
-    private JSONObject establecimiento;
 
+    public ImageView imageNoFavorite;
     public ImageView imageFavorite;
     private TextView textViewName;
     private TextView textViewDesc;
@@ -62,6 +63,8 @@ public class DetailFragment extends Fragment implements DatePickerDialog.OnDateS
     String direccion = "";
     String telefono = "";
     String horario = "";
+
+    private static String IMAGE_URL_BASE = "http://bellezaperu.com/images/clientes/166/amarige_am01.jpg";
 
     private static String URI_SERVICES = "http://estilosapp.apphb.com/Estilos.svc/ObtenerListaServicioEstablecimiento/";
     private static String URI_STYLISTS = "http://estilosapp.apphb.com/Estilos.svc/ObtenerListaEstilistaEstablecimiento/";
@@ -87,13 +90,19 @@ public class DetailFragment extends Fragment implements DatePickerDialog.OnDateS
     }
 
     private void initializeElements() {
-        imageFavorite = (ImageView) rootview.findViewById(R.id.imageFavorite);
-        imageFavorite.setOnClickListener(new View.OnClickListener() {
+
+        ImageView imageEstablecimiento = (ImageView) rootview.findViewById(R.id.imageViewPortrait);
+        Picasso.with(rootview.getContext()).load(IMAGE_URL_BASE).placeholder(R.mipmap.ic_launcher).into(imageEstablecimiento);
+
+        imageNoFavorite = (ImageView) rootview.findViewById(R.id.imageNoFavorite);
+        imageNoFavorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AgregarFavorito();
             }
         });
+
+        imageFavorite = (ImageView) rootview.findViewById(R.id.imageFavorite);
 
         textViewName = (TextView)rootview.findViewById(R.id.textViewName);
         textViewDesc = (TextView)rootview.findViewById(R.id.textViewDesc);
@@ -198,46 +207,54 @@ public class DetailFragment extends Fragment implements DatePickerDialog.OnDateS
 
     private void ReservarEstablecimiento() {
 
-        Service servicio = (Service)spinnerServices.getSelectedItem();
-        String codServicio = servicio.getId()+"";
+        String hh = textViewTime.getText().toString();
 
-        Stylist estilista = (Stylist)spinnerStylists.getSelectedItem();
-        String codEstilista = estilista.getId()+"";
+        if(hh.length()!=0) {
 
-        String codEstablecimiento = idEstablecimiento+"";
-        String codUsuario = idUsuario;
+            Service servicio = (Service) spinnerServices.getSelectedItem();
+            String codServicio = servicio.getId() + "";
 
-        String fecha = textViewDate.getText().toString();
-        String dia = fecha.substring(0,2);
-        String mes = fecha.substring(3,5);
-        String anno = fecha.substring(6,10);
-        String fechaSQL = anno+"-"+mes+"-"+dia;
-        String hora = textViewTime.getText().toString()+":00";
+            Stylist estilista = (Stylist) spinnerStylists.getSelectedItem();
+            String codEstilista = estilista.getId() + "";
 
-        String urlString = "codUsuario="+codUsuario+"&codEstablecimiento="+codEstablecimiento+"&codEstilista="+codEstilista+"&codServicio="+codServicio+"&hora="+fechaSQL+"%20"+hora;
+            String codEstablecimiento = idEstablecimiento + "";
+            String codUsuario = idUsuario;
 
-        // Create a client to perform networking
-        AsyncHttpClient client = new AsyncHttpClient();
+            String fecha = textViewDate.getText().toString();
+            String dia = fecha.substring(0, 2);
+            String mes = fecha.substring(3, 5);
+            String anno = fecha.substring(6, 10);
+            String fechaSQL = anno + "-" + mes + "-" + dia;
+            String hora = textViewTime.getText().toString() + ":00";
 
-        Toast.makeText(rootview.getContext(), QUERY_RESERVATION + urlString, Toast.LENGTH_LONG).show();
+            String urlString = "codUsuario=" + codUsuario + "&codEstablecimiento=" + codEstablecimiento + "&codEstilista=" + codEstilista + "&codServicio=" + codServicio + "&hora=" + fechaSQL + "%20" + hora;
 
-        // Have the client get a JSONArray of data nd define how to respond
-        client.get(QUERY_RESERVATION + urlString, new JsonHttpResponseHandler() {
+            // Create a client to perform networking
+            AsyncHttpClient client = new AsyncHttpClient();
 
-            @Override
-            public void onSuccess(JSONObject jsonObject) {
+            Toast.makeText(rootview.getContext(), QUERY_RESERVATION + urlString, Toast.LENGTH_LONG).show();
 
-                Toast.makeText(rootview.getContext().getApplicationContext(), "Success!", Toast.LENGTH_LONG).show();
+            // Have the client get a JSONArray of data nd define how to respond
+            client.get(QUERY_RESERVATION + urlString, new JsonHttpResponseHandler() {
 
-                //LoginCorrecto(jsonObject);
-            }
+                @Override
+                public void onSuccess(JSONObject jsonObject) {
 
-            @Override
-            public void onFailure(int statusCode, Throwable throwable, JSONObject error) {
-                Toast.makeText(rootview.getContext().getApplicationContext(), error.optString("Mensaje").toString()+"!", Toast.LENGTH_LONG).show();
-            }
-        });
+                    Toast.makeText(rootview.getContext().getApplicationContext(), "Success!", Toast.LENGTH_LONG).show();
 
+                    //LoginCorrecto(jsonObject);
+                }
+
+                @Override
+                public void onFailure(int statusCode, Throwable throwable, JSONObject error) {
+                    Toast.makeText(rootview.getContext().getApplicationContext(), error.optString("Mensaje").toString() + "!", Toast.LENGTH_LONG).show();
+                }
+            });
+
+        }
+        else {
+            Toast.makeText(rootview.getContext(),"Seleccione Hora de Reserva!", Toast.LENGTH_LONG).show();
+        }
     }
 
     private void AgregarFavorito() {
@@ -259,7 +276,8 @@ public class DetailFragment extends Fragment implements DatePickerDialog.OnDateS
             public void onSuccess(JSONObject jsonObject) {
 
                 Toast.makeText(rootview.getContext().getApplicationContext(), "Establecimiento hecho favorito!", Toast.LENGTH_LONG).show();
-
+                imageNoFavorite.setVisibility(View.GONE);
+                imageFavorite.setVisibility(View.VISIBLE);
                 //LoginCorrecto(jsonObject);
             }
 
