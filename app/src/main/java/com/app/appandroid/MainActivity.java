@@ -84,19 +84,19 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
         fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
     }
 
-    public void restoreActionBar() {
+    public void restoreActionBar(CharSequence title) {
+        mTitle = title;
         ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setTitle(mTitle); //Titulo al cerrar el drawer y ver ventanas
+        actionBar.setTitle(title); //Titulo al cerrar el drawer y ver ventanas
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (!mNavigationDrawerFragment.isDrawerOpen()) {
             getMenuInflater().inflate(R.menu.main, menu);
-            restoreActionBar();
+            restoreActionBar(mTitle);
             return true;
         }
         return super.onCreateOptionsMenu(menu);

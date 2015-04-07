@@ -106,8 +106,12 @@ public class FavoritesFragment extends Fragment {
         argsUsuario.putString("direccion", direccion);
         argsUsuario.putString("telefono", telefono);
         argsUsuario.putString("horario", horario);
+
+        CharSequence tituloReservar;
+        tituloReservar = getString(R.string.title_section_reservation);
         detailFragment.setArguments(argsUsuario);
         ((MainActivity)getActivity()).changeFragment(detailFragment);
+        ((MainActivity)getActivity()).restoreActionBar(tituloReservar);
 
     }
 
