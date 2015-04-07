@@ -22,7 +22,7 @@ import org.json.JSONArray;
 
 public class HistoryFragment extends Fragment {
 
-    private String QUERY_LIST_HISTORY = "http://estilosapp.apphb.com/Estilos.svc/ObtenerListaReservaUsuario/";
+    private String QUERY_LIST_HISTORY = "http://estilosapp.apphb.com/Estilos.svc/ObtenerListaReservaUsuarioDESC/";
 
     View rootview;
     ListView historyListView;

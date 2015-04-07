@@ -45,6 +45,10 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
     @Override
     public void onNavigationDrawerItemSelected(int position) {
 
+        if (idUsuario==null) {
+            idUsuario = this.getIntent().getExtras().getString("idUsuario");
+        }
+
         Fragment selectedFragment = null;
 
         switch (position) {

@@ -19,8 +19,6 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 
 public class HistoryAdapter extends BaseAdapter {
 
-    //private String QUERY_LIST_HISTORY = "http://estilosapp.apphb.com/Estilos.svc/ObtenerListaReservaUsuario/";
-
     Context mContext;
     LayoutInflater mInflater;
     JSONArray mHistoryArray;

@@ -8,10 +8,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.app.appandroid.MainActivity;
 import com.app.appandroid.R;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -27,7 +29,14 @@ public class FavoritesFragment extends Fragment {
     View rootview;
     ListView favoritesListView;
     FavoritesAdapter favoritesAdapter;
+
     String idUsuario;
+    String idEstablecimiento = "";
+    String noEstablecimiento = "";
+    String desEstablecimiento = "";
+    String direccion = "";
+    String telefono = "";
+    String horario = "";
 
     @Nullable
     @Override
@@ -41,6 +50,12 @@ public class FavoritesFragment extends Fragment {
         favoritesAdapter = new FavoritesAdapter(rootview.getContext(),idUsuario);
         // Set the ListView to use the ArrayAdapter
         favoritesListView.setAdapter(favoritesAdapter);
+        favoritesListView.setOnItemClickListener(new AdapterView.OnItemClickListener () {
+            @Override
+            public void onItemClick(AdapterView <?> parent, View view, int position, long id) {
+                StartFragmentDetail(position);
+            }
+        });
 
         ListFavorites(idUsuario);
 
@@ -67,6 +82,32 @@ public class FavoritesFragment extends Fragment {
                 Toast.makeText(rootview.getContext().getApplicationContext(), error.optString("Mensaje").toString()+"!", Toast.LENGTH_LONG).show();
             }
         });
+
+    }
+
+    private void StartFragmentDetail(int position) {
+
+        JSONObject jsonObject = (JSONObject) favoritesAdapter.getItem(position);
+        String idFavorito = jsonObject.optString("idFavorito");
+        idEstablecimiento = jsonObject.optString("idEstablecimiento");
+        noEstablecimiento = jsonObject.optString("noEstablecimiento");
+        desEstablecimiento = jsonObject.optString("desEstablecimiento");
+        direccion = jsonObject.optString("direccion");
+        telefono = jsonObject.optString("telefono");
+        horario = jsonObject.optString("horario");
+
+        DetailFragment detailFragment = new DetailFragment();
+
+        Bundle argsUsuario = new Bundle();
+        argsUsuario.putString("idUsuario", idUsuario);
+        argsUsuario.putString("idEstablecimiento", idEstablecimiento);
+        argsUsuario.putString("noEstablecimiento", noEstablecimiento);
+        argsUsuario.putString("desEstablecimiento", desEstablecimiento);
+        argsUsuario.putString("direccion", direccion);
+        argsUsuario.putString("telefono", telefono);
+        argsUsuario.putString("horario", horario);
+        detailFragment.setArguments(argsUsuario);
+        ((MainActivity)getActivity()).changeFragment(detailFragment);
 
     }
 

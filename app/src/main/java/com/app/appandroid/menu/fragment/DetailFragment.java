@@ -72,6 +72,8 @@ public class DetailFragment extends Fragment implements DatePickerDialog.OnDateS
     private String QUERY_RESERVATION = "http://estilosapp.apphb.com/Estilos.svc/RegistrarReserva/?";
     private String QUERY_FAVORITE = "http://estilosapp.apphb.com/Estilos.svc/AgregrarFavorito/?";
 
+    private String QUERY_LIST_FAVORITES = "http://estilosapp.apphb.com/Estilos.svc/ObtenerListaFavoritoUsuario/";
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -103,6 +105,8 @@ public class DetailFragment extends Fragment implements DatePickerDialog.OnDateS
         });
 
         imageFavorite = (ImageView) rootview.findViewById(R.id.imageFavorite);
+
+        MostrarFavorito(idUsuario);
 
         textViewName = (TextView)rootview.findViewById(R.id.textViewName);
         textViewDesc = (TextView)rootview.findViewById(R.id.textViewDesc);
@@ -145,6 +149,7 @@ public class DetailFragment extends Fragment implements DatePickerDialog.OnDateS
                 ReservarEstablecimiento();
             }
         });
+
     }
 
     private  void initializeSpinnerService(int idEstablecimiento){
@@ -205,6 +210,42 @@ public class DetailFragment extends Fragment implements DatePickerDialog.OnDateS
         });
     }
 
+    private void MostrarFavorito(String id) {
+
+        String urlString = id;
+        final String idEst = idEstablecimiento+"";
+
+        AsyncHttpClient client = new AsyncHttpClient();
+
+        Toast.makeText(rootview.getContext(), QUERY_LIST_FAVORITES+urlString, Toast.LENGTH_LONG).show();
+
+        client.get(QUERY_LIST_FAVORITES+urlString, new JsonHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(JSONArray jsonArray) {
+
+                try {
+                    for (int i=0; i < jsonArray.length(); i++) {
+                        JSONObject jsonEstablecimiento = jsonArray.getJSONObject(i);
+                        if (jsonEstablecimiento.optString("idEstablecimiento").equals(idEst)) {
+                            imageNoFavorite.setVisibility(View.GONE);
+                            imageFavorite.setVisibility(View.VISIBLE);
+                            break;
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Throwable throwable, JSONObject error) {
+                Toast.makeText(rootview.getContext().getApplicationContext(), error.optString("Mensaje").toString()+"!", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
     private void ReservarEstablecimiento() {
 
         String hh = textViewTime.getText().toString();
@@ -240,7 +281,7 @@ public class DetailFragment extends Fragment implements DatePickerDialog.OnDateS
                 @Override
                 public void onSuccess(JSONObject jsonObject) {
 
-                    Toast.makeText(rootview.getContext().getApplicationContext(), "Success!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(rootview.getContext().getApplicationContext(), "Reserva Realizada!", Toast.LENGTH_LONG).show();
 
                     //LoginCorrecto(jsonObject);
                 }

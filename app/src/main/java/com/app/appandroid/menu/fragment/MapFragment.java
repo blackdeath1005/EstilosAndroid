@@ -59,56 +59,6 @@ public class MapFragment extends Fragment implements LocationProvider.LocationCa
 
         idUsuario = this.getArguments().getString("idUsuario");
 
-/*
-        String latitudParam = "latitud=-12.1095700";
-        String longitudeParam = "longitud=-77.0378160";
-
-        AsyncHttpClient client = new AsyncHttpClient();
-
-        Toast.makeText(rootView.getContext(), URI_ESTABLECIMIENTO+latitudParam+"&"+longitudeParam, Toast.LENGTH_LONG).show();
-        client.get(URI_ESTABLECIMIENTO+latitudParam+"&"+longitudeParam, new JsonHttpResponseHandler() {
-
-            @Override
-            public void onSuccess(JSONObject jsonObject) {
-                Toast.makeText(rootView.getContext().getApplicationContext(), "Success!", Toast.LENGTH_LONG).show();
-                DetailFragment detailFragment = new DetailFragment();
-                if (jsonObject.has("idEstablecimiento")) {
-                    idEstablecimiento = jsonObject.optString("idEstablecimiento","");
-                }
-                if (jsonObject.has("noEstablecimiento")) {
-                    noEstablecimiento = jsonObject.optString("noEstablecimiento");
-                }
-                if (jsonObject.has("desEstablecimiento")) {
-                    desEstablecimiento = jsonObject.optString("desEstablecimiento");
-                }
-                if (jsonObject.has("direccion")) {
-                    direccion = jsonObject.optString("direccion");
-                }
-                if (jsonObject.has("telefono")) {
-                    telefono = jsonObject.optString("telefono");
-                }
-                if (jsonObject.has("horario")) {
-                    horario = jsonObject.optString("horario");
-                }
-                Bundle argsUsuario = new Bundle();
-                argsUsuario.putString("idUsuario", idUsuario);
-                argsUsuario.putString("idEstablecimiento", idEstablecimiento);
-                argsUsuario.putString("noEstablecimiento", noEstablecimiento);
-                argsUsuario.putString("desEstablecimiento", desEstablecimiento);
-                argsUsuario.putString("direccion", direccion);
-                argsUsuario.putString("telefono", telefono);
-                argsUsuario.putString("horario", horario);
-                detailFragment.setArguments(argsUsuario);
-                ((MainActivity)getActivity()).changeFragment(detailFragment);
-            }
-
-            @Override
-            public void onFailure(int statusCode, Throwable throwable, JSONObject error) {
-                Log.d("MapFragment",error.toString());
-            }
-        });
-*/
-
         loadMap(savedInstanceState);
         return rootView;
     }
