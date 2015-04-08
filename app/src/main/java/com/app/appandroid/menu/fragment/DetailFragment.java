@@ -63,8 +63,9 @@ public class DetailFragment extends Fragment implements DatePickerDialog.OnDateS
     String direccion = "";
     String telefono = "";
     String horario = "";
+    String imagen = "";
 
-    private static String IMAGE_URL_BASE = "http://bellezaperu.com/images/clientes/166/amarige_am01.jpg";
+    //private static String IMAGE_URL_BASE = "http://bellezaperu.com/images/clientes/166/amarige_am01.jpg";
 
     private static String URI_SERVICES = "http://estilosapp.apphb.com/Estilos.svc/ObtenerListaServicioEstablecimiento/";
     private static String URI_STYLISTS = "http://estilosapp.apphb.com/Estilos.svc/ObtenerListaEstilistaEstablecimiento/";
@@ -86,6 +87,7 @@ public class DetailFragment extends Fragment implements DatePickerDialog.OnDateS
         direccion = this.getArguments().getString("direccion");
         telefono = this.getArguments().getString("telefono");
         horario = this.getArguments().getString("horario");
+        imagen = this.getArguments().getString("imagen");
 
         initializeElements();
         return rootview;
@@ -94,7 +96,7 @@ public class DetailFragment extends Fragment implements DatePickerDialog.OnDateS
     private void initializeElements() {
 
         ImageView imageEstablecimiento = (ImageView) rootview.findViewById(R.id.imageViewPortrait);
-        Picasso.with(rootview.getContext()).load(IMAGE_URL_BASE).placeholder(R.mipmap.ic_launcher).into(imageEstablecimiento);
+        Picasso.with(rootview.getContext()).load(imagen).placeholder(R.mipmap.ic_launcher).into(imageEstablecimiento);
 
         imageNoFavorite = (ImageView) rootview.findViewById(R.id.imageNoFavorite);
         imageNoFavorite.setOnClickListener(new View.OnClickListener() {

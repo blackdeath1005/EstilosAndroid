@@ -43,6 +43,7 @@ public class MapFragment extends Fragment implements LocationProvider.LocationCa
     String direccion = "";
     String telefono = "";
     String horario = "";
+    String imagen = "";
 
     private static String URI_ESTABLECIMIENTOS = "http://estilosapp.apphb.com/Estilos.svc/ObtenerListaEstablecimiento/";
     private static String URI_ESTABLECIMIENTO = "http://estilosapp.apphb.com/Estilos.svc/BuscarEstablecimiento/?";
@@ -195,6 +196,9 @@ public class MapFragment extends Fragment implements LocationProvider.LocationCa
                 if (jsonObject.has("horario")) {
                     horario = jsonObject.optString("horario");
                 }
+                if (jsonObject.has("imagen")) {
+                    imagen = jsonObject.optString("imagen");
+                }
                 Bundle argsUsuario = new Bundle();
                 argsUsuario.putString("idUsuario", idUsuario);
                 argsUsuario.putString("idEstablecimiento", idEstablecimiento);
@@ -203,8 +207,13 @@ public class MapFragment extends Fragment implements LocationProvider.LocationCa
                 argsUsuario.putString("direccion", direccion);
                 argsUsuario.putString("telefono", telefono);
                 argsUsuario.putString("horario", horario);
+                argsUsuario.putString("imagen", imagen);
+
+                CharSequence tituloReservar;
+                tituloReservar = getString(R.string.title_section_reservation);
                 detailFragment.setArguments(argsUsuario);
                 ((MainActivity)getActivity()).changeFragment(detailFragment);
+                ((MainActivity)getActivity()).restoreActionBar(tituloReservar);
             }
 
             @Override

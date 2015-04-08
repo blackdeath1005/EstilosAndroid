@@ -37,6 +37,7 @@ public class FavoritesFragment extends Fragment {
     String direccion = "";
     String telefono = "";
     String horario = "";
+    String imagen = "";
 
     @Nullable
     @Override
@@ -95,7 +96,8 @@ public class FavoritesFragment extends Fragment {
         direccion = jsonObject.optString("direccion");
         telefono = jsonObject.optString("telefono");
         horario = jsonObject.optString("horario");
-
+        imagen = jsonObject.optString("imagen");
+        Toast.makeText(rootview.getContext(), imagen+" JSON", Toast.LENGTH_LONG).show();
         DetailFragment detailFragment = new DetailFragment();
 
         Bundle argsUsuario = new Bundle();
@@ -106,6 +108,7 @@ public class FavoritesFragment extends Fragment {
         argsUsuario.putString("direccion", direccion);
         argsUsuario.putString("telefono", telefono);
         argsUsuario.putString("horario", horario);
+        argsUsuario.putString("imagen", imagen);
 
         CharSequence tituloReservar;
         tituloReservar = getString(R.string.title_section_reservation);
