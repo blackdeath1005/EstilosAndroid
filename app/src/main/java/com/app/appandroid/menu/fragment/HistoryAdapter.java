@@ -63,9 +63,7 @@ public class HistoryAdapter extends BaseAdapter {
             holder = new ViewHolder();
             holder.textFecha = (TextView) convertView.findViewById(R.id.textFecha);
             holder.textNombre = (TextView) convertView.findViewById(R.id.textNombre);
-            holder.textDireccion = (TextView) convertView.findViewById(R.id.textDireccion);
-            holder.textTelefono = (TextView) convertView.findViewById(R.id.textTelefono);
-            holder.textHora = (TextView) convertView.findViewById(R.id.textHora);
+            holder.textServicio = (TextView) convertView.findViewById(R.id.textServicio);
 
             // hang onto this holder for future recyclage
             convertView.setTag(holder);
@@ -80,17 +78,16 @@ public class HistoryAdapter extends BaseAdapter {
         // Get the current book's data in JSON form
         JSONObject jsonObject = (JSONObject) getItem(position);
         // Grab the title and author from the JSON
-        String idEstablecimiento = "";
         String noEstablecimiento = "";
+        String noServicio = "";
         String fechahora = "";
         String fecha= "";
-        String hora = "";
 
-        if (jsonObject.has("idEstablecimiento")) {
-            idEstablecimiento = jsonObject.optString("idEstablecimiento");
-        }
         if (jsonObject.has("noEstablecimiento")) {
             noEstablecimiento = jsonObject.optString("noEstablecimiento");
+        }
+        if (jsonObject.has("noServicio")) {
+            noServicio = jsonObject.optString("noServicio");
         }
         if (jsonObject.has("hora")) {
             fechahora = jsonObject.optString("hora");
@@ -99,17 +96,13 @@ public class HistoryAdapter extends BaseAdapter {
         // Send these Strings to the TextViews for display
         if(fechahora.length()!=0) {
             fecha = fechahora.substring(0,10);
-            hora = fechahora.substring(11,16);
             holder.textFecha.setText(fecha);
-            holder.textHora.setText("Hora: "+hora);
         }
         else {
             holder.textFecha.setText(fechahora);
-            holder.textHora.setText("Hora: "+fechahora);
         }
         holder.textNombre.setText("Establecimiento: "+noEstablecimiento);
-        holder.textDireccion.setText("Direccion: "+idEstablecimiento);
-        //holder.textTelefono.setText("Telf: "+telefono);
+        holder.textServicio.setText("Servicio: "+noServicio);
 
         return convertView;
     }
@@ -119,9 +112,7 @@ public class HistoryAdapter extends BaseAdapter {
     private static class ViewHolder {
         public TextView textFecha;
         public TextView textNombre;
-        public TextView textDireccion;
-        public TextView textTelefono;
-        public TextView textHora;
+        public TextView textServicio;
     }
 
     public void updateData(JSONArray jsonArray) {

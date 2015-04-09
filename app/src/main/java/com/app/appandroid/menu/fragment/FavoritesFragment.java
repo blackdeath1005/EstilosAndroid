@@ -97,7 +97,7 @@ public class FavoritesFragment extends Fragment {
         telefono = jsonObject.optString("telefono");
         horario = jsonObject.optString("horario");
         imagen = jsonObject.optString("imagen");
-        Toast.makeText(rootview.getContext(), imagen+" JSON", Toast.LENGTH_LONG).show();
+
         DetailFragment detailFragment = new DetailFragment();
 
         Bundle argsUsuario = new Bundle();

@@ -8,10 +8,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.app.appandroid.MainActivity;
 import com.app.appandroid.R;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -27,7 +29,13 @@ public class HistoryFragment extends Fragment {
     View rootview;
     ListView historyListView;
     HistoryAdapter historyAdapter;
+
     String idUsuario;
+    String idEstablecimiento = "";
+    String noEstablecimiento = "";
+    String noEstilista = "";
+    String noServicio = "";
+    String hora = "";
 
     @Nullable
     @Override
@@ -41,6 +49,13 @@ public class HistoryFragment extends Fragment {
         historyAdapter = new HistoryAdapter(rootview.getContext(),idUsuario);
         // Set the ListView to use the ArrayAdapter
         historyListView.setAdapter(historyAdapter);
+        historyListView.setOnItemClickListener(new AdapterView.OnItemClickListener () {
+            @Override
+            public void onItemClick(AdapterView <?> parent, View view, int position, long id) {
+                StartHistorytDetail(position);
+            }
+        });
+
 
         ListHistory(idUsuario);
 
@@ -67,6 +82,33 @@ public class HistoryFragment extends Fragment {
                 Toast.makeText(rootview.getContext().getApplicationContext(), error.optString("Mensaje").toString()+"!", Toast.LENGTH_LONG).show();
             }
         });
+
+    }
+
+    private void StartHistorytDetail(int position) {
+
+        JSONObject jsonObject = (JSONObject) historyAdapter.getItem(position);
+        idEstablecimiento = jsonObject.optString("idEstablecimiento");
+        noEstablecimiento = jsonObject.optString("noEstablecimiento");
+        noEstilista = jsonObject.optString("noEstilista");
+        noServicio = jsonObject.optString("noServicio");
+        hora = jsonObject.optString("hora");
+
+        HistoryDetailFragment historydetailFragment = new HistoryDetailFragment();
+
+        Bundle argsUsuario = new Bundle();
+        argsUsuario.putString("idUsuario", idUsuario);
+        argsUsuario.putString("idEstablecimiento", idEstablecimiento);
+        argsUsuario.putString("noEstablecimiento", noEstablecimiento);
+        argsUsuario.putString("noEstilista", noEstilista);
+        argsUsuario.putString("noServicio", noServicio);
+        argsUsuario.putString("hora", hora);
+
+        CharSequence tituloReservar;
+        tituloReservar = getString(R.string.title_section_history_detail);
+        historydetailFragment.setArguments(argsUsuario);
+        ((MainActivity)getActivity()).changeFragment(historydetailFragment);
+        ((MainActivity)getActivity()).restoreActionBar(tituloReservar);
 
     }
 

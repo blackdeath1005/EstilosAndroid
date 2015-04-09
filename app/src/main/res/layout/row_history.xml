@@ -2,7 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="145dp"
+    android:layout_height="105dp"
     android:orientation="vertical" >
 
     <TextView
@@ -20,30 +20,14 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="7dp"
-        android:text="Establecimiento: Amarige Salon y Spa Lima"/>
+        android:text="Establecimiento: Amarige"/>
 
     <TextView
-        android:id="@+id/textDireccion"
+        android:id="@+id/textServicio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="3dp"
-        android:text="Dirección: Av. Tahiti 129. Monterrico"/>
-
-    <TextView
-        android:id="@+id/textTelefono"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="3dp"
-        android:text="Telf: 4413550" />
-
-    <TextView
-        android:id="@+id/textHora"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="3dp"
-        android:text="Hora: 17:00" />
+        android:text="Servicio: Corte"/>
 
 </LinearLayout>
