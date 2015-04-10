@@ -19,15 +19,21 @@
             android:layout_marginTop="20dp"
             android:textSize="35sp"/>
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageViewPortrait"
-            android:layout_gravity="center_horizontal|top"
-            android:src="@android:mipmap/sym_def_app_icon"
-            android:layout_centerHorizontal="true"
-            android:layout_margin="10dp"
-            android:layout_below="@id/textViewName"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:orientation="horizontal"
+            android:id="@+id/linear"
+            android:layout_below="@id/textViewName">
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/viewPager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp" >
+            </android.support.v4.view.ViewPager>
+
+        </LinearLayout>
 
         <ImageView
             android:layout_width="wrap_content"
@@ -35,7 +41,7 @@
             android:src="@drawable/ic_action_not_important"
             android:id="@+id/imageNoFavorite"
             android:clickable="true"
-            android:layout_below="@id/imageViewPortrait"
+            android:layout_below="@id/linear"
             android:layout_alignRight="@+id/textViewDesc"
             android:layout_alignEnd="@+id/textViewDesc"
             android:layout_marginTop="10dp" />
@@ -46,7 +52,7 @@
             android:src="@drawable/ic_action_important"
             android:id="@+id/imageFavorite"
             android:clickable="true"
-            android:layout_below="@id/imageViewPortrait"
+            android:layout_below="@id/linear"
             android:layout_alignRight="@+id/textViewDesc"
             android:layout_alignEnd="@+id/textViewDesc"
             android:layout_marginTop="10dp"

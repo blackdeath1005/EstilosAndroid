@@ -38,6 +38,8 @@ public class FavoritesFragment extends Fragment {
     String telefono = "";
     String horario = "";
     String imagen = "";
+    String imagen2 = "";
+    String imagen3 = "";
 
     @Nullable
     @Override
@@ -97,6 +99,8 @@ public class FavoritesFragment extends Fragment {
         telefono = jsonObject.optString("telefono");
         horario = jsonObject.optString("horario");
         imagen = jsonObject.optString("imagen");
+        imagen2 = jsonObject.optString("imagen2");
+        imagen3 = jsonObject.optString("imagen3");
 
         DetailFragment detailFragment = new DetailFragment();
 
@@ -109,6 +113,8 @@ public class FavoritesFragment extends Fragment {
         argsUsuario.putString("telefono", telefono);
         argsUsuario.putString("horario", horario);
         argsUsuario.putString("imagen", imagen);
+        argsUsuario.putString("imagen2", imagen2);
+        argsUsuario.putString("imagen3", imagen3);
 
         CharSequence tituloReservar;
         tituloReservar = getString(R.string.title_section_reservation);

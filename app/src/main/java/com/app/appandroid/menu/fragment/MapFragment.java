@@ -44,6 +44,8 @@ public class MapFragment extends Fragment implements LocationProvider.LocationCa
     String telefono = "";
     String horario = "";
     String imagen = "";
+    String imagen2 = "";
+    String imagen3 = "";
 
     private static String URI_ESTABLECIMIENTOS = "http://estilosapp.apphb.com/Estilos.svc/ObtenerListaEstablecimiento/";
     private static String URI_ESTABLECIMIENTO = "http://estilosapp.apphb.com/Estilos.svc/BuscarEstablecimiento/?";
@@ -199,6 +201,12 @@ public class MapFragment extends Fragment implements LocationProvider.LocationCa
                 if (jsonObject.has("imagen")) {
                     imagen = jsonObject.optString("imagen");
                 }
+                if (jsonObject.has("imagen2")) {
+                    imagen2 = jsonObject.optString("imagen2");
+                }
+                if (jsonObject.has("imagen3")) {
+                    imagen3 = jsonObject.optString("imagen3");
+                }
                 Bundle argsUsuario = new Bundle();
                 argsUsuario.putString("idUsuario", idUsuario);
                 argsUsuario.putString("idEstablecimiento", idEstablecimiento);
@@ -208,6 +216,8 @@ public class MapFragment extends Fragment implements LocationProvider.LocationCa
                 argsUsuario.putString("telefono", telefono);
                 argsUsuario.putString("horario", horario);
                 argsUsuario.putString("imagen", imagen);
+                argsUsuario.putString("imagen2", imagen2);
+                argsUsuario.putString("imagen3", imagen3);
 
                 CharSequence tituloReservar;
                 tituloReservar = getString(R.string.title_section_reservation);

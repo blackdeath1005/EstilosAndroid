@@ -53,7 +53,7 @@ public class LoginActivity extends Activity {
         });
 
         mDialog = new ProgressDialog(this);
-        mDialog.setMessage("Validando datos");
+        mDialog.setMessage("Validando datos...");
         mDialog.setCancelable(true);
     }
 

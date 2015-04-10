@@ -3,8 +3,10 @@ package com.app.appandroid.menu.fragment;
 import android.app.DatePickerDialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +24,7 @@ import com.app.appandroid.R;
 import com.app.appandroid.model.Service;
 import com.app.appandroid.model.Stylist;
 import com.app.appandroid.widgets.DatePickerDialogFragment;
+import com.app.appandroid.widgets.LoadImage;
 import com.app.appandroid.widgets.TimePickerDialogFragment;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -64,8 +67,8 @@ public class DetailFragment extends Fragment implements DatePickerDialog.OnDateS
     String telefono = "";
     String horario = "";
     String imagen = "";
-
-    //private static String IMAGE_URL_BASE = "http://bellezaperu.com/images/clientes/166/amarige_am01.jpg";
+    String imagen2 = "";
+    String imagen3 = "";
 
     private static String URI_SERVICES = "http://estilosapp.apphb.com/Estilos.svc/ObtenerListaServicioEstablecimiento/";
     private static String URI_STYLISTS = "http://estilosapp.apphb.com/Estilos.svc/ObtenerListaEstilistaEstablecimiento/";
@@ -74,6 +77,11 @@ public class DetailFragment extends Fragment implements DatePickerDialog.OnDateS
     private String QUERY_FAVORITE = "http://estilosapp.apphb.com/Estilos.svc/AgregrarFavorito/?";
 
     private String QUERY_LIST_FAVORITES = "http://estilosapp.apphb.com/Estilos.svc/ObtenerListaFavoritoUsuario/";
+
+
+    ViewPager mViewPager;
+    ImagePagerAdapter mImagePagerAdapter;
+    ProgressDialog mDialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -88,6 +96,11 @@ public class DetailFragment extends Fragment implements DatePickerDialog.OnDateS
         telefono = this.getArguments().getString("telefono");
         horario = this.getArguments().getString("horario");
         imagen = this.getArguments().getString("imagen");
+        imagen2 = this.getArguments().getString("imagen2");
+        imagen3 = this.getArguments().getString("imagen3");
+
+        mDialog = new ProgressDialog(rootview.getContext());
+        mDialog.setCancelable(true);
 
         initializeElements();
         return rootview;
@@ -95,8 +108,19 @@ public class DetailFragment extends Fragment implements DatePickerDialog.OnDateS
 
     private void initializeElements() {
 
-        ImageView imageEstablecimiento = (ImageView) rootview.findViewById(R.id.imageViewPortrait);
-        Picasso.with(rootview.getContext()).load(imagen).placeholder(R.mipmap.ic_launcher).into(imageEstablecimiento);
+        //ImageView imageEstablecimiento = (ImageView) rootview.findViewById(R.id.imageViewPortrait);
+        //Picasso.with(rootview.getContext()).load(imagen).placeholder(R.mipmap.ic_launcher).into(imageEstablecimiento);
+        // mLoadImage = new LoadImage(rootview.getContext(),mDialog,imageEstablecimiento);
+        //mLoadImage.execute(imagen);
+        String[] mImages = {
+                imagen,
+                imagen2,
+                imagen3
+        };
+
+        mImagePagerAdapter = new ImagePagerAdapter(rootview.getContext(),mImages,mDialog);
+        mViewPager = (ViewPager) rootview.findViewById(R.id.viewPager);
+        mViewPager.setAdapter(mImagePagerAdapter);
 
         imageNoFavorite = (ImageView) rootview.findViewById(R.id.imageNoFavorite);
         imageNoFavorite.setOnClickListener(new View.OnClickListener() {
@@ -151,6 +175,7 @@ public class DetailFragment extends Fragment implements DatePickerDialog.OnDateS
                 ReservarEstablecimiento();
             }
         });
+
 
     }
 
