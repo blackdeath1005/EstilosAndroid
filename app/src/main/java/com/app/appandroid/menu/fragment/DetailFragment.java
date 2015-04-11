@@ -34,6 +34,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -41,7 +43,8 @@ import java.util.GregorianCalendar;
 
 public class DetailFragment extends Fragment implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
-    private static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("dd/MM/yyyy");
+    private static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("dd-MM-yyyy");
+    final long MILLSECS_PER_DAY = 24 * 60 * 60 * 1000;
     View rootview;
 
     public ImageView imageNoFavorite;
@@ -288,37 +291,69 @@ public class DetailFragment extends Fragment implements DatePickerDialog.OnDateS
             String codEstablecimiento = idEstablecimiento + "";
             String codUsuario = idUsuario;
 
+            DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            Date today = new Date();
+            Date fechaHoy = null;
+            try {
+                fechaHoy =formatter.parse(formatter.format(today));
+            }
+            catch (ParseException ex)
+            {
+            }
+
             String fecha = textViewDate.getText().toString();
             String dia = fecha.substring(0, 2);
             String mes = fecha.substring(3, 5);
             String anno = fecha.substring(6, 10);
             String fechaSQL = anno + "-" + mes + "-" + dia;
-            String hora = textViewTime.getText().toString() + ":00";
 
-            String urlString = "codUsuario=" + codUsuario + "&codEstablecimiento=" + codEstablecimiento + "&codEstilista=" + codEstilista + "&codServicio=" + codServicio + "&hora=" + fechaSQL + "%20" + hora;
+            SimpleDateFormat spdFecha= new SimpleDateFormat("yyyy-MM-dd");
+            Date fechaDate = null;
+            try {
+                fechaDate = spdFecha.parse(fechaSQL);
+            }
+            catch (ParseException ex)
+            {
+            }
 
-            // Create a client to perform networking
-            AsyncHttpClient client = new AsyncHttpClient();
+            long compareDays = (fechaDate.getTime() - fechaHoy.getTime())/MILLSECS_PER_DAY;
 
-            Toast.makeText(rootview.getContext(), QUERY_RESERVATION + urlString, Toast.LENGTH_LONG).show();
-
-            // Have the client get a JSONArray of data nd define how to respond
-            client.get(QUERY_RESERVATION + urlString, new JsonHttpResponseHandler() {
-
-                @Override
-                public void onSuccess(JSONObject jsonObject) {
-
-                    Toast.makeText(rootview.getContext().getApplicationContext(), "Reserva Realizada!", Toast.LENGTH_LONG).show();
-
-                    //LoginCorrecto(jsonObject);
+            if(compareDays<0) {
+                Toast.makeText(rootview.getContext(),"Fecha es menor a la actual!", Toast.LENGTH_LONG).show();
+            }
+            else
+                if(compareDays>7) {
+                    Toast.makeText(rootview.getContext(),"Fecha es mayor a 7 dias!", Toast.LENGTH_LONG).show();
                 }
+                else {
+                    String hora = textViewTime.getText().toString() + ":00";
+                    int parteH = Integer.parseInt(hora.substring(0,2));
+                    if(parteH <8 || parteH > 22) {
+                        Toast.makeText(rootview.getContext(),"Horario fuera del rango de atención!", Toast.LENGTH_LONG).show();
+                    }
+                    else {
+                        String urlString = "codUsuario=" + codUsuario + "&codEstablecimiento=" + codEstablecimiento + "&codEstilista=" + codEstilista + "&codServicio=" + codServicio + "&hora=" + fechaSQL + "%20" + hora;
 
-                @Override
-                public void onFailure(int statusCode, Throwable throwable, JSONObject error) {
-                    Toast.makeText(rootview.getContext().getApplicationContext(), error.optString("Mensaje").toString() + "!", Toast.LENGTH_LONG).show();
+                        // Create a client to perform networking
+                        AsyncHttpClient client = new AsyncHttpClient();
+
+                        Toast.makeText(rootview.getContext(), QUERY_RESERVATION + urlString, Toast.LENGTH_LONG).show();
+
+                        // Have the client get a JSONArray of data nd define how to respond
+                        client.get(QUERY_RESERVATION + urlString, new JsonHttpResponseHandler() {
+
+                            @Override
+                            public void onSuccess(JSONObject jsonObject) {
+                                Toast.makeText(rootview.getContext().getApplicationContext(), "Reserva Realizada!", Toast.LENGTH_LONG).show();
+                            }
+
+                            @Override
+                            public void onFailure(int statusCode, Throwable throwable, JSONObject error) {
+                                Toast.makeText(rootview.getContext().getApplicationContext(), error.optString("Mensaje").toString() + "!", Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    }
                 }
-            });
-
         }
         else {
             Toast.makeText(rootview.getContext(),"Seleccione Hora de Reserva!", Toast.LENGTH_LONG).show();
