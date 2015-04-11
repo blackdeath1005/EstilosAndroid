@@ -37,12 +37,6 @@ public class RegisterActivity extends Activity {
         editTextMail = (EditText) findViewById(R.id.editTextMail);
         editTextPass1 = (EditText) findViewById(R.id.editTextPass1);
         editTextPass2 = (EditText) findViewById(R.id.editTextPass2);
-
-        editTextName.setText("Carlos Martel");
-        editTextMail.setText("cmartel@gmail.com");
-        editTextPass1.setText("1234");
-        editTextPass2.setText("1234");
-
         buttonRegistrar = (Button) findViewById(R.id.buttonRegistrar);
         buttonRegistrar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,8 +68,6 @@ public class RegisterActivity extends Activity {
             // Create a client to perform networking
             AsyncHttpClient client = new AsyncHttpClient();
 
-            Toast.makeText(this, QUERY_REGISTRATION + urlString, Toast.LENGTH_LONG).show();
-
             // Show ProgressDialog to inform user that a task in the background is occurring
             mDialog.show();
             // Have the client get a JSONArray of data nd define how to respond
@@ -84,16 +76,13 @@ public class RegisterActivity extends Activity {
                 @Override
                 public void onSuccess(JSONObject jsonObject) {
                     mDialog.dismiss();
-
-                    Toast.makeText(getApplicationContext(), "Success!", Toast.LENGTH_LONG).show();
-
+                    Toast.makeText(getApplicationContext(), "Registro Satisfactorio!", Toast.LENGTH_LONG).show();
                     NavUtils.navigateUpFromSameTask(RegisterActivity.this);
                 }
 
                 @Override
                 public void onFailure(int statusCode, Throwable throwable, JSONObject error) {
                     mDialog.dismiss();
-
                     editTextName.setText("");
                     editTextMail.setText("");
                     editTextPass1.setText("");

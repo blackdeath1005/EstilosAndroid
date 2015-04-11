@@ -1,6 +1,7 @@
 package com.app.appandroid.menu.fragment;
 
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBarActivity;
@@ -41,6 +42,10 @@ public class FavoritesFragment extends Fragment {
     String imagen2 = "";
     String imagen3 = "";
 
+    ProgressDialog mDialog;
+    ProgressDialog mDialog2;
+    ProgressDialog mDialog3;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -49,8 +54,13 @@ public class FavoritesFragment extends Fragment {
 
         idUsuario = this.getArguments().getString("idUsuario");
 
+        mDialog2 = new ProgressDialog(rootview.getContext());
+        mDialog2.setMessage("Eliminando Favorito...");
+        mDialog3 = new ProgressDialog(rootview.getContext());
+        mDialog3.setMessage("Buscando Favoritos...");
+
         favoritesListView = (ListView) rootview.findViewById(R.id.listviewFavoritos);
-        favoritesAdapter = new FavoritesAdapter(rootview.getContext(),idUsuario);
+        favoritesAdapter = new FavoritesAdapter(rootview.getContext(),idUsuario,mDialog2,mDialog3);
         // Set the ListView to use the ArrayAdapter
         favoritesListView.setAdapter(favoritesAdapter);
         favoritesListView.setOnItemClickListener(new AdapterView.OnItemClickListener () {
@@ -59,6 +69,10 @@ public class FavoritesFragment extends Fragment {
                 StartFragmentDetail(position);
             }
         });
+
+        mDialog = new ProgressDialog(rootview.getContext());
+        mDialog.setMessage("Buscando Favoritos...");
+        mDialog.setCancelable(true);
 
         ListFavorites(idUsuario);
 
@@ -70,18 +84,19 @@ public class FavoritesFragment extends Fragment {
         String urlString = id;
 
         AsyncHttpClient client = new AsyncHttpClient();
-
-        Toast.makeText(rootview.getContext(), QUERY_LIST_FAVORITES+urlString, Toast.LENGTH_LONG).show();
+        mDialog.show();
 
         client.get(QUERY_LIST_FAVORITES+urlString, new JsonHttpResponseHandler() {
 
             @Override
             public void onSuccess(JSONArray jsonArray) {
+                mDialog.dismiss();
                 favoritesAdapter.updateData(jsonArray);
             }
 
             @Override
             public void onFailure(int statusCode, Throwable throwable, JSONObject error) {
+                mDialog.dismiss();
                 Toast.makeText(rootview.getContext().getApplicationContext(), error.optString("Mensaje").toString()+"!", Toast.LENGTH_LONG).show();
             }
         });

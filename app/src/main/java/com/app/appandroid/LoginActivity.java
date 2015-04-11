@@ -33,9 +33,6 @@ public class LoginActivity extends Activity {
         editTextMail = (EditText) findViewById(R.id.editTextMail);
         editTextPass = (EditText) findViewById(R.id.editTextPass);
 
-        editTextMail.setText("blackdeath1005@gmail.com");
-        editTextPass.setText("1234");
-
         buttonLogin = (Button) findViewById(R.id.buttonLogin);
         buttonLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,9 +68,6 @@ public class LoginActivity extends Activity {
 
         // Create a client to perform networking
         AsyncHttpClient client = new AsyncHttpClient();
-
-        Toast.makeText(this, QUERY_AUTENTICACION + urlString, Toast.LENGTH_LONG).show();
-
         // Show ProgressDialog to inform user that a task in the background is occurring
         mDialog.show();
         // Have the client get a JSONArray of data nd define how to respond
@@ -82,9 +76,6 @@ public class LoginActivity extends Activity {
             @Override
             public void onSuccess(JSONObject jsonObject) {
                 mDialog.dismiss();
-
-                Toast.makeText(getApplicationContext(), "Success!", Toast.LENGTH_LONG).show();
-
                 LoginCorrecto(jsonObject);
             }
 

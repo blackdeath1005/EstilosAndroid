@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -113,11 +112,9 @@ public class MapFragment extends Fragment implements LocationProvider.LocationCa
     public void handleFirstLocation(Location location) {
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 15));
         AsyncHttpClient client = new AsyncHttpClient();
-        Toast.makeText(rootView.getContext(), URI_ESTABLECIMIENTOS, Toast.LENGTH_LONG).show();
         client.get(URI_ESTABLECIMIENTOS, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(JSONArray response){
-                Toast.makeText(rootView.getContext().getApplicationContext(), "Success!", Toast.LENGTH_LONG).show();
                 try {    Log.d("MapFragment",response.toString());
                     response.length();
                     for (int i=0; i < response.length(); i++) {
@@ -173,12 +170,10 @@ public class MapFragment extends Fragment implements LocationProvider.LocationCa
 
         AsyncHttpClient client = new AsyncHttpClient();
 
-        Toast.makeText(rootView.getContext(), URI_ESTABLECIMIENTO+latitudParam+"&"+longitudeParam, Toast.LENGTH_LONG).show();
         client.get(URI_ESTABLECIMIENTO+latitudParam+"&"+longitudeParam, new JsonHttpResponseHandler() {
 
             @Override
             public void onSuccess(JSONObject jsonObject) {
-                Toast.makeText(rootView.getContext().getApplicationContext(), "Success!", Toast.LENGTH_LONG).show();
                 DetailFragment detailFragment = new DetailFragment();
                 if (jsonObject.has("idEstablecimiento")) {
                     idEstablecimiento = jsonObject.optString("idEstablecimiento","");

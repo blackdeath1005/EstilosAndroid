@@ -1,5 +1,6 @@
 package com.app.appandroid.menu.fragment;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,12 +27,16 @@ public class FavoritesAdapter extends BaseAdapter {
     LayoutInflater mInflater;
     JSONArray mFavoritesArray;
     String mIdUsuario;
+    ProgressDialog mDialog;
+    ProgressDialog mDialog2;
 
-    public FavoritesAdapter(Context context, String idUsuario) {
+    public FavoritesAdapter(Context context, String idUsuario, ProgressDialog dial, ProgressDialog dial2) {
         mContext = context;
         mInflater = LayoutInflater.from(context);
         mFavoritesArray = new JSONArray();
         mIdUsuario = idUsuario;
+        mDialog = dial;
+        mDialog2 = dial2;
     }
 
     @Override
@@ -145,18 +150,19 @@ public class FavoritesAdapter extends BaseAdapter {
         String urlString = id;
 
         AsyncHttpClient client = new AsyncHttpClient();
-
-        Toast.makeText(mContext, QUERY_DELETE_FAVORITES+urlString, Toast.LENGTH_LONG).show();
+        mDialog.show();
 
         client.get(QUERY_DELETE_FAVORITES+urlString, new JsonHttpResponseHandler() {
 
             @Override
             public void onSuccess(JSONObject error) {
+                mDialog.dismiss();
                 Toast.makeText(mContext.getApplicationContext(), "Error en la eliminacion!", Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onFailure(int statusCode, Throwable throwable, JSONObject jsonObject) {
+                mDialog.dismiss();
                 Toast.makeText(mContext.getApplicationContext(), jsonObject.optString("Mensaje").toString()+"!", Toast.LENGTH_LONG).show();
                 ListFavorites(mIdUsuario);
             }
@@ -169,18 +175,19 @@ public class FavoritesAdapter extends BaseAdapter {
         String urlString = id;
 
         AsyncHttpClient client = new AsyncHttpClient();
-
-        Toast.makeText(mContext, QUERY_LIST_FAVORITES+urlString, Toast.LENGTH_LONG).show();
+        mDialog2.show();
 
         client.get(QUERY_LIST_FAVORITES+urlString, new JsonHttpResponseHandler() {
 
             @Override
             public void onSuccess(JSONArray jsonArray) {
+                mDialog2.dismiss();
                 updateData(jsonArray);
             }
 
             @Override
             public void onFailure(int statusCode, Throwable throwable, JSONObject error) {
+                mDialog2.dismiss();
                 Toast.makeText(mContext.getApplicationContext(), error.optString("Mensaje").toString()+"!", Toast.LENGTH_LONG).show();
             }
         });

@@ -1,6 +1,7 @@
 package com.app.appandroid.menu.fragment;
 
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBarActivity;
@@ -38,6 +39,8 @@ public class HistoryFragment extends Fragment {
     String noServicio = "";
     String hora = "";
 
+    ProgressDialog mDialog;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -57,6 +60,9 @@ public class HistoryFragment extends Fragment {
             }
         });
 
+        mDialog = new ProgressDialog(rootview.getContext());
+        mDialog.setMessage("Buscando Reservas...");
+        mDialog.setCancelable(true);
 
         ListHistory(idUsuario);
 
@@ -68,18 +74,19 @@ public class HistoryFragment extends Fragment {
         String urlString = id;
 
         AsyncHttpClient client = new AsyncHttpClient();
-
-        Toast.makeText(rootview.getContext(), QUERY_LIST_HISTORY+urlString, Toast.LENGTH_LONG).show();
+        mDialog.show();
 
         client.get(QUERY_LIST_HISTORY+urlString, new JsonHttpResponseHandler() {
 
             @Override
             public void onSuccess(JSONArray jsonArray) {
+                mDialog.dismiss();
                 historyAdapter.updateData(jsonArray);
             }
 
             @Override
             public void onFailure(int statusCode, Throwable throwable, JSONObject error) {
+                mDialog.dismiss();
                 Toast.makeText(rootview.getContext().getApplicationContext(), error.optString("Mensaje").toString()+"!", Toast.LENGTH_LONG).show();
             }
         });

@@ -85,6 +85,7 @@ public class DetailFragment extends Fragment implements DatePickerDialog.OnDateS
     ViewPager mViewPager;
     ImagePagerAdapter mImagePagerAdapter;
     ProgressDialog mDialog;
+    ProgressDialog mDialog2;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -104,6 +105,10 @@ public class DetailFragment extends Fragment implements DatePickerDialog.OnDateS
 
         mDialog = new ProgressDialog(rootview.getContext());
         mDialog.setCancelable(true);
+
+        mDialog2 = new ProgressDialog(rootview.getContext());
+        mDialog2.setMessage("Haciendo Reservacion...");
+        mDialog2.setCancelable(true);
 
         initializeElements();
         return rootview;
@@ -247,8 +252,6 @@ public class DetailFragment extends Fragment implements DatePickerDialog.OnDateS
 
         AsyncHttpClient client = new AsyncHttpClient();
 
-        Toast.makeText(rootview.getContext(), QUERY_LIST_FAVORITES+urlString, Toast.LENGTH_LONG).show();
-
         client.get(QUERY_LIST_FAVORITES+urlString, new JsonHttpResponseHandler() {
 
             @Override
@@ -333,22 +336,21 @@ public class DetailFragment extends Fragment implements DatePickerDialog.OnDateS
                     }
                     else {
                         String urlString = "codUsuario=" + codUsuario + "&codEstablecimiento=" + codEstablecimiento + "&codEstilista=" + codEstilista + "&codServicio=" + codServicio + "&hora=" + fechaSQL + "%20" + hora;
-
+                        mDialog2.show();
                         // Create a client to perform networking
                         AsyncHttpClient client = new AsyncHttpClient();
-
-                        Toast.makeText(rootview.getContext(), QUERY_RESERVATION + urlString, Toast.LENGTH_LONG).show();
-
                         // Have the client get a JSONArray of data nd define how to respond
                         client.get(QUERY_RESERVATION + urlString, new JsonHttpResponseHandler() {
 
                             @Override
                             public void onSuccess(JSONObject jsonObject) {
+                                mDialog2.dismiss();
                                 Toast.makeText(rootview.getContext().getApplicationContext(), "Reserva Realizada!", Toast.LENGTH_LONG).show();
                             }
 
                             @Override
                             public void onFailure(int statusCode, Throwable throwable, JSONObject error) {
+                                mDialog2.dismiss();
                                 Toast.makeText(rootview.getContext().getApplicationContext(), error.optString("Mensaje").toString() + "!", Toast.LENGTH_LONG).show();
                             }
                         });
@@ -370,18 +372,14 @@ public class DetailFragment extends Fragment implements DatePickerDialog.OnDateS
         // Create a client to perform networking
         AsyncHttpClient client = new AsyncHttpClient();
 
-        Toast.makeText(rootview.getContext(), QUERY_FAVORITE + urlString, Toast.LENGTH_LONG).show();
-
         // Have the client get a JSONArray of data nd define how to respond
         client.get(QUERY_FAVORITE + urlString, new JsonHttpResponseHandler() {
 
             @Override
             public void onSuccess(JSONObject jsonObject) {
-
                 Toast.makeText(rootview.getContext().getApplicationContext(), "Establecimiento hecho favorito!", Toast.LENGTH_LONG).show();
                 imageNoFavorite.setVisibility(View.GONE);
                 imageFavorite.setVisibility(View.VISIBLE);
-                //LoginCorrecto(jsonObject);
             }
 
             @Override

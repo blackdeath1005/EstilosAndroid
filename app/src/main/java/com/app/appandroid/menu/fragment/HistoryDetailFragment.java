@@ -1,6 +1,7 @@
 package com.app.appandroid.menu.fragment;
 
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,6 +53,9 @@ public class HistoryDetailFragment extends Fragment {
     String telefono = "";
     String horario = "";
 
+    ProgressDialog mDialog;
+    ProgressDialog mDialog2;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -79,6 +83,10 @@ public class HistoryDetailFragment extends Fragment {
         textFecha = (TextView)rootview.findViewById(R.id.textFecha);
         textHora = (TextView)rootview.findViewById(R.id.textHora);
 
+        mDialog = new ProgressDialog(rootview.getContext());
+        mDialog.setMessage("Leyendo Reserva...");
+        mDialog.setCancelable(true);
+
         datosEstablecimiento(idEstablecimiento);
 
         textNombre.setText(noEstablecimiento);
@@ -105,6 +113,10 @@ public class HistoryDetailFragment extends Fragment {
             }
         });
 
+        mDialog2 = new ProgressDialog(rootview.getContext());
+        mDialog2.setMessage("Cancelando Reserva...");
+        mDialog2.setCancelable(true);
+
         return rootview;
     }
 
@@ -113,14 +125,13 @@ public class HistoryDetailFragment extends Fragment {
         String urlString = id;
 
         AsyncHttpClient client = new AsyncHttpClient();
-
-        Toast.makeText(rootview.getContext(), QUERY_ESTABLECIMIENTO+urlString, Toast.LENGTH_LONG).show();
+        mDialog.show();
 
         client.get(QUERY_ESTABLECIMIENTO+urlString, new JsonHttpResponseHandler() {
 
             @Override
             public void onSuccess(JSONObject jsonObject) {
-                Toast.makeText(rootview.getContext().getApplicationContext(), "Success!", Toast.LENGTH_LONG).show();
+                mDialog.dismiss();
 
                 if (jsonObject.has("desEstablecimiento")) {
                     desEstablecimiento = jsonObject.optString("desEstablecimiento","");
@@ -143,6 +154,7 @@ public class HistoryDetailFragment extends Fragment {
 
             @Override
             public void onFailure(int statusCode, Throwable throwable, JSONObject error) {
+                mDialog.dismiss();
                 Toast.makeText(rootview.getContext().getApplicationContext(), error.optString("Mensaje").toString()+"!", Toast.LENGTH_LONG).show();
             }
         });
@@ -154,18 +166,19 @@ public class HistoryDetailFragment extends Fragment {
         String urlString = id;
 
         AsyncHttpClient client = new AsyncHttpClient();
-
-        Toast.makeText(rootview.getContext(), QUERY_DELETE_RESERVATION+urlString, Toast.LENGTH_LONG).show();
+        mDialog2.show();
 
         client.get(QUERY_DELETE_RESERVATION+urlString, new JsonHttpResponseHandler() {
 
             @Override
             public void onSuccess(JSONObject error) {
+                mDialog2.dismiss();
                 Toast.makeText(rootview.getContext().getApplicationContext(), "Error en la eliminacion!", Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void onFailure(int statusCode, Throwable throwable, JSONObject jsonObject) {
+                mDialog2.dismiss();
                 Toast.makeText(rootview.getContext().getApplicationContext(), jsonObject.optString("Mensaje").toString()+"!", Toast.LENGTH_LONG).show();
                 StartFragmentHistory();
             }
