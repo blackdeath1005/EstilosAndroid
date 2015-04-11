@@ -18,7 +18,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Spa para toda la familia"
+        android:text=""
         android:id="@+id/textDescripcion"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="10dp"
@@ -27,7 +27,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Direccion: Ucello 186, San Borja 15036"
+        android:text="Direccion: "
         android:id="@+id/textDireccion"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="3dp"/>
@@ -38,7 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="3dp"
-        android:text="Telf: 4413550" />
+        android:text="Telf: " />
 
     <TextView
         android:id="@+id/textHorarioTitulo"
@@ -54,7 +54,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="3dp"
-        android:text="L-V 10:00 - 21:00" />
+        android:text="" />
 
     <RelativeLayout
         android:layout_width="match_parent"

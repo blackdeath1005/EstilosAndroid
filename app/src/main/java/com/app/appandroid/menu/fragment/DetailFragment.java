@@ -129,6 +129,7 @@ public class DetailFragment extends Fragment implements DatePickerDialog.OnDateS
         mImagePagerAdapter = new ImagePagerAdapter(rootview.getContext(),mImages,mDialog);
         mViewPager = (ViewPager) rootview.findViewById(R.id.viewPager);
         mViewPager.setAdapter(mImagePagerAdapter);
+        mViewPager.setOffscreenPageLimit(2);
 
         imageNoFavorite = (ImageView) rootview.findViewById(R.id.imageNoFavorite);
         imageNoFavorite.setOnClickListener(new View.OnClickListener() {
