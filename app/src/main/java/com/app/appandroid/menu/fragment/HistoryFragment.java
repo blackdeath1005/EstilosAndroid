@@ -31,6 +31,7 @@ public class HistoryFragment extends Fragment {
     HistoryAdapter historyAdapter;
 
     String idUsuario;
+    String idReserva = "";
     String idEstablecimiento = "";
     String noEstablecimiento = "";
     String noEstilista = "";
@@ -88,6 +89,7 @@ public class HistoryFragment extends Fragment {
     private void StartHistorytDetail(int position) {
 
         JSONObject jsonObject = (JSONObject) historyAdapter.getItem(position);
+        idReserva = jsonObject.optString("idReserva");
         idEstablecimiento = jsonObject.optString("idEstablecimiento");
         noEstablecimiento = jsonObject.optString("noEstablecimiento");
         noEstilista = jsonObject.optString("noEstilista");
@@ -98,6 +100,7 @@ public class HistoryFragment extends Fragment {
 
         Bundle argsUsuario = new Bundle();
         argsUsuario.putString("idUsuario", idUsuario);
+        argsUsuario.putString("idReserva", idReserva);
         argsUsuario.putString("idEstablecimiento", idEstablecimiento);
         argsUsuario.putString("noEstablecimiento", noEstablecimiento);
         argsUsuario.putString("noEstilista", noEstilista);

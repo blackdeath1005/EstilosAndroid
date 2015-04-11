@@ -5,9 +5,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.app.appandroid.MainActivity;
 import com.app.appandroid.R;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -18,6 +20,7 @@ import org.json.JSONObject;
 public class HistoryDetailFragment extends Fragment {
 
     private String QUERY_ESTABLECIMIENTO = "http://estilosapp.apphb.com/Estilos.svc/ObtenerEstablecimiento/";
+    private String QUERY_DELETE_RESERVATION = "http://estilosapp.apphb.com/Estilos.svc/CancelarReserva/";
 
     View rootview;
 
@@ -28,12 +31,14 @@ public class HistoryDetailFragment extends Fragment {
     private TextView textHorarioTitulo;
     private TextView textHorario;
     private TextView textDetalle;
+    private ImageView imageCancel;
     private TextView textServicio;
     private TextView textEstilista;
     private TextView textFecha;
     private TextView textHora;
 
     String idUsuario = "";
+    String idReserva = "";
     String idEstablecimiento = "";
     String noEstablecimiento = "";
     String noEstilista = "";
@@ -53,6 +58,7 @@ public class HistoryDetailFragment extends Fragment {
         rootview = inflater.inflate(R.layout.fragment_history_detail, container, false);
 
         idUsuario = this.getArguments().getString("idUsuario");
+        idReserva = this.getArguments().getString("idReserva");
         idEstablecimiento = this.getArguments().getString("idEstablecimiento");
         noEstablecimiento = this.getArguments().getString("noEstablecimiento");
         noEstilista = this.getArguments().getString("noEstilista");
@@ -67,6 +73,7 @@ public class HistoryDetailFragment extends Fragment {
         textHorario = (TextView)rootview.findViewById(R.id.textHorario);
 
         textDetalle = (TextView)rootview.findViewById(R.id.textDetalle);
+        imageCancel = (ImageView) rootview.findViewById(R.id.imageCancel);
         textServicio = (TextView)rootview.findViewById(R.id.textServicio);
         textEstilista = (TextView)rootview.findViewById(R.id.textEstilista);
         textFecha = (TextView)rootview.findViewById(R.id.textFecha);
@@ -89,6 +96,14 @@ public class HistoryDetailFragment extends Fragment {
             textFecha.setText("Fecha: "+fechahora);
             textHora.setText("Hora: "+fechahora);
         }
+
+        imageCancel.setTag(idReserva);
+        imageCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EliminarReserva(v.getTag().toString());
+            }
+        });
 
         return rootview;
     }
@@ -131,6 +146,45 @@ public class HistoryDetailFragment extends Fragment {
                 Toast.makeText(rootview.getContext().getApplicationContext(), error.optString("Mensaje").toString()+"!", Toast.LENGTH_LONG).show();
             }
         });
+
+    }
+
+    private void EliminarReserva(String id) {
+
+        String urlString = id;
+
+        AsyncHttpClient client = new AsyncHttpClient();
+
+        Toast.makeText(rootview.getContext(), QUERY_DELETE_RESERVATION+urlString, Toast.LENGTH_LONG).show();
+
+        client.get(QUERY_DELETE_RESERVATION+urlString, new JsonHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(JSONObject error) {
+                Toast.makeText(rootview.getContext().getApplicationContext(), "Error en la eliminacion!", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Throwable throwable, JSONObject jsonObject) {
+                Toast.makeText(rootview.getContext().getApplicationContext(), jsonObject.optString("Mensaje").toString()+"!", Toast.LENGTH_LONG).show();
+                StartFragmentHistory();
+            }
+        });
+
+    }
+
+    private void StartFragmentHistory() {
+
+        HistoryFragment historyFragment = new HistoryFragment();
+
+        Bundle argsUsuario = new Bundle();
+        argsUsuario.putString("idUsuario", idUsuario);
+
+        CharSequence tituloHistory;
+        tituloHistory = getString(R.string.title_section_history);
+        historyFragment.setArguments(argsUsuario);
+        ((MainActivity)getActivity()).changeFragment(historyFragment);
+        ((MainActivity)getActivity()).restoreActionBar(tituloHistory);
 
     }
 
